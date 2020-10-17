@@ -3,4 +3,4 @@
 session_start();
 unset($_SESSION);
 session_destroy();
-header('LOCATION: ../../index.php');
+header('LOCATION: ../index/index.php');
