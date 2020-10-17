@@ -1,6 +1,6 @@
 <?php
 include '../_header/header.php';
-require __DIR__ . '../../../controller/session.php';
+//require __DIR__ . '../../../controller/session.php';
 require __DIR__ . '../../../controller/Ranking.php';
 require __DIR__ . '../../../controller/Usuario.php';
 
@@ -50,7 +50,7 @@ switch ($op) {
 
 <head>
     <!-- Referência da folha de estilo do cabeçalho -->
-<link rel="stylesheet" href="../_header/header.css">
+    <link rel="stylesheet" href="../_header/header.css">
 </head>
 
 <body>
@@ -61,21 +61,30 @@ switch ($op) {
         <h4>Email: <?= $usuario['nm_email'] ?></h4>
     <?php } ?>
 
-    <!-- <form action="../../controller/Upload.php" method="post" enctype="multipart/form-data">
-  Select image to upload:
-  <input type="file" name="fileToUpload" id="fileToUpload"> -->
     <?php if ($usuario['nm_caminho_foto'] != null) { ?>
-        <button type="button" data-toggle="modal" data-target="#ExemploModalCentralizado"><img src="../../images/<?= $usuario['nm_caminho_foto'] ?>" style=" height:170px;
+        <button type="button" data-toggle="modal" data-target="#ExemploModalCentralizado"><img src="../../user-uploads/images/<?= $usuario['nm_caminho_foto'] ?>" style=" height:170px;
     width:auto;/*maintain aspect ratio*/
     max-width:180px;"></button>
     <?php } else { ?>
-        <!-- TODO style mockado para manter padrão de tamanho da imagem -->
+        <!-- TODO style mockado para manter padrão de tamanho da imagem, passar para CSS -->
         <button type="button" data-toggle="modal" data-target="#ExemploModalCentralizado"><img src="../../user-uploads/images/default-user.png" style=" height:170px;
     width:auto;/*maintain aspect ratio*/
     max-width:180px;"></button>
     <?php } ?>
-    <!-- <input type="submit" value="Upload Image" name="submit">
-</form> -->
+
+    <!-- Menu do perfil start -->
+    <ul>
+        <li>
+            <a class="dropdown-item" href="view/Publica/publica.php">Rankings</a>
+        </li>
+        <li>
+            <a class="dropdown-item" href="view/Publica/publica.php">Conquistas</a>
+        </li>
+        <li>
+            <a class="dropdown-item" href="view/Publica/publica.php">Informações</a>
+        </li>
+    </ul>
+    <!-- Menu do perfil end -->
 
 
     <!-- Start Modal -->

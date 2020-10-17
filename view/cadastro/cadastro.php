@@ -10,7 +10,6 @@ $nmSenha = $_POST['nmSenha'] ?? null;
 $nmSenha2 = $_POST['nmSenha2'] ?? null;
 $nmEmail = $_POST['nmEmail'] ?? null;
 $options = ['cost' => 12,];
-
 if (!is_null($nmEmail)) {
     require __DIR__ . '../../../controller/Usuario.php';
     

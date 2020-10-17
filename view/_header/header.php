@@ -26,7 +26,8 @@ include '../../controller/Session.php';
     <ul>
         <li style="float:right">
             <!-- Button com dropdown start -->
-            <div class="input-group mb-3">
+    <!-- TODO style mockado, passar para CSS -->
+            <div class="input-group mb-3"  style="position: unset;">
                 <div class="input-group-prepend">
                     <button type="button" onclick="window.location.href = '/view/minhas-informacoes.php'" id="user" class="btn btn-outline-secondary"><?php echo $_SESSION['nome']; ?></button>
                     <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -46,6 +47,7 @@ include '../../controller/Session.php';
                             <div role="separator" class="dropdown-divider"></div>
                             <a class="dropdown-item" href="view/login/login.php">Login</a>
                             <a class="dropdown-item" href="view/logout/logout.php">Sair</a>
+                        </form>
                     </div>
                 </div>
             </div>

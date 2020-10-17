@@ -21,11 +21,13 @@ class Usuario extends connection {
         $connection = new connection();
         $con = $connection->OpenCon();
 
+
         $query = "INSERT INTO usuario (nm_login, nm_senha, nm_email, nm_usuario) VALUES('','$nmSenha','$nmEmail','$nmUsuario');";
         
-        // if ($con->query($query) === FALSE){
-        //     echo "Error: " . $sql . "<br>" . $conn->error;
-        // }
+        if ($con->query($query) === FALSE){
+            echo "Error: " . $query . "<br>" . $con->error;
+        }
+
 
         $connection->CloseCon($con);
     }
@@ -138,6 +140,25 @@ class Usuario extends connection {
         var_dump($id, $caminhoFoto, $sql);
         $connection->CloseCon($con);
         
+    }
+
+    /**
+     * uploadImage
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    public function removeImageReference($id)
+    {
+
+        $connection = new connection();
+        $con = $connection->OpenCon();
+        // Deleta todos os jogadores e artilharias dessa conta
+
+        // Deleta a conta
+        $sql = "UPDATE Usuario set nm_caminho_foto = null where id_usuario = $id";
+        mysqli_query($con, $sql);
+        $connection->CloseCon($con);
     }
 
 }
