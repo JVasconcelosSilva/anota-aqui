@@ -1,10 +1,12 @@
 <?php
-// Incluir session em todas as páginas exceto index, login e cadastro
-if ($_SERVER['REQUEST_URI'] != '/view/index/index.php' && $_SERVER['REQUEST_URI'] != '/view/login/login.php' && $_SERVER['REQUEST_URI'] != '/view/cadastro/cadastro.php') {
+// Incluir session em todas as páginas exceto index, login e cadastro. Nestas páginas, iniciar a sessão para verificar se o mesmo "isset".
+if ($_SERVER['REQUEST_URI'] != '/view/index/index.php' && $_SERVER['REQUEST_URI'] != '/view/login/login.php' && $_SERVER['REQUEST_URI'] != '/view/cadastro/cadastro.php' && $_SERVER['REQUEST_URI'] != '/view/publica/publica.php') {
     include '../../controller/Session.php';
+} else if ($_SERVER['REQUEST_URI'] == '/view/index/index.php' || $_SERVER['REQUEST_URI'] == '/view/login/login.php' || $_SERVER['REQUEST_URI'] == '/view/cadastro/cadastro.php' || $_SERVER['REQUEST_URI'] == '/view/publica/publica.php') {
+    session_start();
 }
 
-$nomeArtilharia = $_POST['nmRanking']?? null;
+$nomeArtilharia = $_POST['nmRanking'] ?? null;
 ?>
 
 <!-- Bootsstrap reference start -->
@@ -32,8 +34,9 @@ $nomeArtilharia = $_POST['nmRanking']?? null;
             <!-- TODO style mockado, passar para CSS -->
             <div class="input-group mb-3" style="position: unset;">
                 <div class="input-group-prepend">
-                    <?php if (isset($_SESSION)) { ?>
-                        <button type="button" onclick="window.location.href = '../view/minhas-informacoes.php'" id="user" class="btn btn-outline-secondary"><?php echo $_SESSION['nome']; ?></button>
+                    <?php
+                    if (isset($_SESSION)) { ?>
+                        <button type="button" onclick="window.location.href = '../perfil/perfil.php'" id="user" class="btn btn-outline-secondary"><?php echo $_SESSION['nome']; ?></button>
                     <?php } else { ?>
                         <button type="button" onclick="window.location.href = '../login/login.php'" id="user" class="btn btn-outline-secondary">Login</button>
                     <?php } ?>
@@ -44,7 +47,7 @@ $nomeArtilharia = $_POST['nmRanking']?? null;
                     <div class="dropdown-menu dropdown-menu-right">
                         <form method="get" action="../publicas/publicas.php?nomeArtilharia=<?= $nomeArtilharia ?>" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                             <div class="input-group" id="menuPesquisa">
-                                <input type="text" name="nomeArtilharia" class="form-control bg-light border-0 small" placeholder="Procurar artilharia..." aria-label="Search" aria-describedby="basic-addon2">
+                                <input type="text" name="nomeArtilharia" class="form-control bg-light border-0 small" placeholder="Procurar ranking..." aria-label="Search" aria-describedby="basic-addon2">
                             </div>
                             <div role="separator" class="dropdown-divider"></div>
                             <a class="dropdown-item" href="../publica/publica.php">Rankings Públicos</a>
@@ -52,10 +55,10 @@ $nomeArtilharia = $_POST['nmRanking']?? null;
                             <a class="dropdown-item" href="../minhas-informacoes.php">Minhas Informações</a>
                             <a class="dropdown-item" href="../perfil/perfil.php">Perfil</a>
                             <div role="separator" class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="../login/login.php">Login</a>
                             <?php if (isset($_SESSION)) { ?>
                                 <a class="dropdown-item" href="../logout/logout.php">Sair</a>
                             <?php } else { ?>
+                                <a class="dropdown-item" href="../login/login.php">Login</a>
                                 <a class="dropdown-item" href="../cadastro/cadastro.php">Cadastro</a>
                             <?php } ?>
                         </form>

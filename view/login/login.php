@@ -1,4 +1,8 @@
 <?php
+session_start();
+if (isset($_SESSION['id'], $_SESSION['nome'], $_SESSION['email'])) {
+    header('LOCATION: ../../index.php');
+}
 include '../_header/header.php';
 $email = $_POST['email'] ?? null;
 $senha = $_POST['senha'] ?? null;

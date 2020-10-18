@@ -51,28 +51,28 @@ switch ($op) {
 <head>
     <!-- Referência da folha de estilo do cabeçalho -->
     <link rel="stylesheet" href="../_header/header.css">
+    <title>Perfil</title>
 </head>
 
 <body>
-    <h1>Test</h1>
-    <?= var_dump($infoUsuario) ?>
+    <h1>Perfil</h1>
     <?php foreach ($infoUsuario as $usuario) { ?>
         <h4>Nome: <?= $usuario['nm_usuario'] ?></h4>
         <h4>Email: <?= $usuario['nm_email'] ?></h4>
     <?php } ?>
 
     <?php if ($usuario['nm_caminho_foto'] != null) { ?>
-        <button type="button" data-toggle="modal" data-target="#ExemploModalCentralizado"><img src="../../user-uploads/images/<?= $usuario['nm_caminho_foto'] ?>" style=" height:170px;
+        <button type="button" data-toggle="modal" data-target="#UploadImageModal"><img src="../../user-uploads/images/<?= $usuario['nm_caminho_foto'] ?>" style=" height:170px;
     width:auto;/*maintain aspect ratio*/
     max-width:180px;"></button>
     <?php } else { ?>
         <!-- TODO style mockado para manter padrão de tamanho da imagem, passar para CSS -->
-        <button type="button" data-toggle="modal" data-target="#ExemploModalCentralizado"><img src="../../user-uploads/images/default-user.png" style=" height:170px;
+        <button type="button" data-toggle="modal" data-target="#UploadImageModal"><img src="../../user-uploads/images/default-user.png" style=" height:170px;
     width:auto;/*maintain aspect ratio*/
     max-width:180px;"></button>
     <?php } ?>
 
-    <!-- Menu do perfil start -->
+    <!-- Menu do perfil Start -->
     <ul>
         <li>
             <a class="dropdown-item" href="view/Publica/publica.php">Rankings</a>
@@ -84,11 +84,74 @@ switch ($op) {
             <a class="dropdown-item" href="view/Publica/publica.php">Informações</a>
         </li>
     </ul>
-    <!-- Menu do perfil end -->
+    <!-- Menu do perfil End -->
+
+    <!-- TODO incluír uma "página" dento dessa pode ser feita da seguinte forma,
+         porém, elementos como o header e classes chamadas na página original não
+         podem ser chamadas aqui, criar uma página sem esses elementos. -->
+    <?php /*include '../publica/publica.php';*/ ?>
+
+    <!-- Lista de rankings Start -->
+    <h1 id="nome">Meus Rankings</h1>
+
+    <div class="wrap">
+        <?php
+        if (is_null($registros)) {
+        ?>
+            <h2>Você ainda não tem artilharias</h2>
+            <?php
+        } else {
+            foreach ($registros as $rankings) {
+                $numRankings++;
+            ?>
+                <div class="box one">
+                    <div class="date">
+                    </div>
+                    <h1><?= $rankings['nm_ranking'] ?></h1>
+                    <br>
+                    <div class="text-box">
+                        <div class="container">
+                            <div class="center">
+                                <a href="../ranking/ranking.php?idRankings=<?= $rankings['id_ranking'] ?>&nmRankings=<?= strtoupper($rankings['nm_ranking']) ?>">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal">Entrar</button>
+                                </a>
+                            </div>
+                        </div>
+                <?php
+            }
+        }
+                ?>
+                    </div>
+                </div>
+    </div>
+    <!-- Lista de rankings End -->
 
 
-    <!-- Start Modal -->
-    <div class="modal fade" id="ExemploModalCentralizado" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true">
+    <!-- Sessão para criar ranking Start -->
+    <?php
+    if ($numRankings  < 3) { ?>
+        <div class="box one">
+            <div class="date">
+            </div>
+            <h4>CRIAR RANKING</h4>
+            <br>
+            <div class="text-box">
+                <div class="container">
+                    <div class="center">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#CriarRankingModal">
+                            Criar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php } ?>
+    <!-- Sessão para criar ranking End -->
+
+    <!-- TODO Uma boa opção seria passar esses modals para um arquivo .php separado, diminuindo o tamando desse arquivo e facilitando na chamada e manutenção -->
+    <!-- Modals Start -->
+    <!-- Upload Image Modal Start -->
+    <div class="modal fade" id="UploadImageModal" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -113,7 +176,63 @@ switch ($op) {
             </div>
         </div>
     </div>
-    </div>
-    <!-- End Modal -->
+    <!-- Upload Image Modal End -->
 
+    <!-- Criar Ranking Modal Start -->
+    <div class="modal fade" id="CriarRankingModal" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="TituloModalCentralizado">Criar Ranking</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST">
+                        <div class="form-group row">
+                            <label for="colFormLabel" class="col-sm-2 col-form-label">Nome</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="colFormLabel" placeholder="Nome do Ranking" name="nmRankings">
+                            </div>
+                        </div>
+                        <div class="form-row align-items-center">
+                            <label for="colFormLabel" class="col-sm-2 col-form-label">Esporte</label>
+                            <div class="col-auto my-1">
+                                <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect">Privacidade</label>
+                                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="ieModalidade">
+                                    <option value="0" selected>Basquete</option>
+                                    <option value="1">Futebol</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                        <fieldset class="form-group">
+                            <div class="row">
+                                <legend class="col-form-label col-sm-2 pt-0">Privacidade</legend>
+                                <div class="col-sm-10">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="icPrivacidade" id="gridRadios1" value="0" checked>
+                                        <label class="form-check-label" for="gridRadios1">
+                                            Pública
+                                        </label>
+                                        <input class="form-check-input" type="radio" name="icPrivacidade" id="gridRadios2" value="1">
+                                        <label class="form-check-label" for="gridRadios2">
+                                            Privada
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Sair</button>
+                            <input type="submit" class="btn btn-primary" value="criar" name="op">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Criar Ranking Modal End -->
+    <!-- Modals End -->
 </body>

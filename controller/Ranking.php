@@ -19,7 +19,7 @@ class Ranking extends connection {
         $sql = "INSERT INTO Ranking (nm_ranking, dt_criacao, ic_privacidade, ie_modalidade, fk_Usuario_id_usuario) 
         VALUES ('$nmRanking', curdate(), $icPrivacidade, $ieModalidade, $idUsuario)";
         
-        // mysqli_query($con, $sql);
+         mysqli_query($con, $sql);
 		// if(mysqli_errno($con)){
 		// 	throw new exception(mysqli_errno($con));
         // }
