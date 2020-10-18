@@ -28,7 +28,7 @@ class Jogador extends connection {
 		$connection = new connection();
 		$con = $connection->OpenCon();
         
-        $sql = "SELECT id_jogador, qt_ponto, nm_jogador FROM Jogador WHERE fk_Ranking_id_ranking = $idRanking ORDER BY qt_ponto DESC;";
+        $sql = "SELECT p.* FROM (SELECT @getJogadoresRanking:=$idRanking f) s, vw_ranking p;";
         
         $result = mysqli_query($this->OpenCon(), $sql);
 

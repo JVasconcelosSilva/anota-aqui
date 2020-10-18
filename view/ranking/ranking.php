@@ -90,10 +90,12 @@ if ($op == "Remover Moderador") {
     </form>
     <!-- Barra de pesquisa de jogador End -->
 
+    <!-- Botão para mostar todos os jogadores (vai aparecer apenas quando tiver uma pesquisa feita) Start -->
     <?php if ($op == "Buscar") { ?>
         <a href="Ranking.php?idRankings=<?= $idRankings ?>&nmRankings=<?= $nmRankings ?>"><button class="btn btn-primary">Mostrar todos os jogadores</button></a>
         <p>Resultados de: <?= $_POST['nmJogador'] ?></p>
     <?php } ?>
+    <!-- Botão para mostar todos os jogadores (vai aparecer apenas quando tiver uma pesquisa feita) End -->
 
     <hr />
 
@@ -101,7 +103,7 @@ if ($op == "Remover Moderador") {
     <?php if ($_SESSION['id'] == $dono['fk_Usuario_id_usuario']) { ?>
         <button class="btn btn-primary" id='addJogador' data-toggle="modal" data-target="#CriarJogador">Adicionar Jogador</button>
     <?php } ?>
-    <!-- Habilitando botão de adicionar jogador para o dono do ranking Start -->
+    <!-- Habilitando botão de adicionar jogador para o dono do ranking End -->
 
     <!-- Populando ranking Start -->
     <?php
@@ -115,6 +117,7 @@ if ($op == "Remover Moderador") {
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-2">
+                            <!-- Colocação do jogador -->
                             <h3 class="colocacao mx-auto"><?= $jogador['colocacao'] ?>°</h3>
                         </div>
                         <div class="col-md-4 mx-auto">
@@ -124,7 +127,7 @@ if ($op == "Remover Moderador") {
                         <!--Numero de gols do jogador-->
                         <h5 class="gols"><?= $jogador['qt_ponto'] ?> </h5>
                         <?php
-                        if (/*$controle == 1 ||*/$_SESSION['id'] == $dono['fk_Usuario_id_usuario']) { ?>
+                        if ($_SESSION['id'] == $dono['fk_Usuario_id_usuario']) { ?>
                             <div class="col-md-2">
                                 <div class="row" mx-auto>
                                     <!--Adiciona um gol-->
@@ -155,6 +158,36 @@ if ($op == "Remover Moderador") {
                 </div>
             </div>
             </div>
+
+<!-- Modal Para Alteração de Jogador Start (Tem que ficar dentro do foreach para pegar a referência do ID do jogador) -->
+<div class="modal fade" id="AlterarJogador-<?= $jogador["id_jogador"]; ?>" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="TituloModalLongoExemplo"><?= $jogador['nm_jogador'] ?></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST">
+                    <div class="modal-body">
+                        <p><input type="text" class="form-control" name="nmNomeUpdate" id="Nome" value="<?= $jogador['nm_jogador'] ?>"></p>
+                        <p><input type="number" class="form-control" name="qtGolUpdate" id="Gol" value="<?= $jogador['qt_ponto'] ?>"></p>
+                        <input type="hidden" name="idJogadorUpdate" value="<?= $jogador['id_jogador'] ?>">
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary" name="op" value="Alterar">
+                        <input type="hidden" name="nmRankings" value="<?= $nmRankings ?>">
+                        <input type="hidden" name="idRankings" value="<?= $idRankings ?>">
+                        <input type="hidden" name="qtGolAtual" value="<?= $jogador['qt_ponto'] ?>">
+                        <input type="submit" class="btn btn-danger" name="op" value="Excluir">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Para Alteração de Jogador End (Tem que ficar dentro do foreach para pegar a referência do ID do jogador) -->
 
         <?php }
     } else { ?>
@@ -187,37 +220,6 @@ if ($op == "Remover Moderador") {
         </div>
     </div>
     <!-- Modal Para Cadastro de Jogador End -->
-
-    <!-- Modal Para Alteração de Jogaodr Start -->
-    <div class="modal fade" id="AlterarJogador-<?= $jogador["id_jogador"]; ?>" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="TituloModalLongoExemplo"><?= $jogador['nm_jogador'] ?></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form method="POST">
-                    <div class="modal-body">
-                        <p><input type="text" class="form-control" name="nmNomeUpdate" id="Nome" value="<?= $jogador['nm_jogador'] ?>"></p>
-                        <p><input type="number" class="form-control" name="qtGolUpdate" id="Gol" value="<?= $jogador['qt_ponto'] ?>"></p>
-                        <input type="hidden" name="idJogadorUpdate" value="<?= $jogador['id_jogador'] ?>">
-                    </div>
-                    <div class="modal-footer">
-                        <input type="submit" class="btn btn-primary" name="op" value="Alterar">
-                        <input type="hidden" name="nmRankings" value="<?= $nmRankings ?>">
-                        <input type="hidden" name="idRankings" value="<?= $idRankings ?>">
-                        <input type="hidden" name="qtGolAtual" value="<?= $jogador['qt_ponto'] ?>">
-                        <input type="submit" class="btn btn-danger" name="op" value="Excluir">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- Modal Para Alteração de Jogaodr End -->
-
 </body>
 <?php
 include '../_footer/footer.php'
