@@ -22,3 +22,7 @@ ul {
   li a:hover {
     background-color: #111;
   }
+
+  #botao{
+    margin-right: 10px;
+  }
