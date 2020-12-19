@@ -35,7 +35,7 @@ $nomeArtilharia = $_POST['nmRanking'] ?? null;
             <div class="input-group mb-3" style="position: unset;">
                 <div class="input-group-prepend">
                     <?php
-                    if (isset($_SESSION)) { ?>
+                    if (isset($_SESSION['nome'])) { ?>
                         <button type="button" onclick="window.location.href = '../perfil/perfil.php'" id="user" class="btn btn-outline-secondary"><?php echo $_SESSION['nome']; ?></button>
                     <?php } else { ?>
                         <button type="button" onclick="window.location.href = '../login/login.php'" id="user" class="btn btn-outline-secondary">Login</button>
@@ -55,7 +55,7 @@ $nomeArtilharia = $_POST['nmRanking'] ?? null;
                             <a class="dropdown-item" href="../minhas-informacoes.php">Minhas Informações</a>
                             <a class="dropdown-item" href="../perfil/perfil.php">Perfil</a>
                             <div role="separator" class="dropdown-divider"></div>
-                            <?php if (isset($_SESSION)) { ?>
+                            <?php if (isset($_SESSION["nome"])) { ?>
                                 <a class="dropdown-item" href="../logout/logout.php">Sair</a>
                             <?php } else { ?>
                                 <a class="dropdown-item" href="../login/login.php">Login</a>
