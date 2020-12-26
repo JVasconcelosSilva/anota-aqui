@@ -92,7 +92,7 @@ class Jogador extends connection {
 		$connection = new connection();
 		$con = $connection->OpenCon();
 
-        $sql = "SELECT p.* FROM (SELECT @getJogadoresRanking:=$idRanking f) s, vw_ranking p WHERE p.nm_jogador = '$nmJogador';";
+        $sql = "SELECT p.* FROM (SELECT @getJogadoresRanking:=$idRanking f) s, vw_ranking p WHERE p.nm_jogador LIKE '%$nmJogador%';";
         
         $result = mysqli_query($this->OpenCon(), $sql);
 

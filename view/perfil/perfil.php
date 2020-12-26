@@ -13,17 +13,20 @@ $infoUsuario = $queryUsuario->selectUsuario($_SESSION['id']);
 $op = $_POST['op'] ?? null;
 
 switch ($op) {
-    case "criar":
+    case "Criar":
         $dtCriacao = date_default_timezone_get();
         $query->cadastrarRanking($_POST['nmRankings'], $dtCriacao, $_POST['icPrivacidade'], $_POST['ieModalidade'], $_SESSION['id']);
         header('LOCATION: perfil.php');
-    case "alterar":
-        $query->updateRanking($_POST['idRankings'], $_POST['nmRankings'], $_POST['icPrivacidade']);
+        break;
+    case "Alterar":
+        $query->updateRanking($_POST['idRanking'], $_POST['nmRanking'], $_POST['icPrivacidade']);
         header('LOCATION: perfil.php');
-    case "excluir":
-        $query->excluirRanking($_SESSION['id'], $_POST['idRankings']);
-
+        break;
+    case "Excluir":
+        $query->excluirRanking($_SESSION['id'], $_POST['idRanking']);
+        throw new Exception("$idRanking e $idUsuario");
         header('LOCATION: perfil.php');
+        break;
 }
 
 // if ($op == "Excluir") {
@@ -57,19 +60,19 @@ switch ($op) {
 <body>
     <h1>Perfil</h1>
     <?php foreach ($infoUsuario as $usuario) { ?>
-        <h4>Nome: <?= $usuario['nm_usuario'] ?></h4>
-        <h4>Email: <?= $usuario['nm_email'] ?></h4>
-    <?php } ?>
 
-    <?php if ($usuario['nm_caminho_foto'] != null) { ?>
-        <button type="button" data-toggle="modal" data-target="#UploadImageModal"><img src="../../user-uploads/images/<?= $usuario['nm_caminho_foto'] ?>" style=" height:170px;
+        <?php if ($usuario['nm_caminho_foto'] != null) { ?>
+            <button type="button" data-toggle="modal" data-target="#UploadImageModal"><img src="../../user-uploads/images/<?= $usuario['nm_caminho_foto'] ?>" style=" height:170px;
     width:auto;/*maintain aspect ratio*/
     max-width:180px;"></button>
-    <?php } else { ?>
-        <!-- TODO style mockado para manter padrão de tamanho da imagem, passar para CSS -->
-        <button type="button" data-toggle="modal" data-target="#UploadImageModal"><img src="../../user-uploads/images/default-user.png" style=" height:170px;
+        <?php } else { ?>
+            <!-- TODO style mockado para manter padrão de tamanho da imagem, passar para CSS -->
+            <button type="button" data-toggle="modal" data-target="#UploadImageModal"><img src="../../user-uploads/images/default-user.png" style=" height:170px;
     width:auto;/*maintain aspect ratio*/
     max-width:180px;"></button>
+        <?php } ?>
+
+        <h4><?= $usuario['nm_usuario'] ?></h4>
     <?php } ?>
 
     <!-- Menu do perfil Start -->
@@ -98,7 +101,7 @@ switch ($op) {
         <?php
         if (is_null($registros)) {
         ?>
-            <h2>Você ainda não tem artilharias</h2>
+            <p>Você ainda não tem artilharias</p>
             <?php
         } else {
             foreach ($registros as $rankings) {
@@ -115,6 +118,16 @@ switch ($op) {
                                 <a href="../ranking/ranking.php?idRankings=<?= $rankings['id_ranking'] ?>&nmRankings=<?= strtoupper($rankings['nm_ranking']) ?>">
                                     <button type="button" class="btn btn-primary" data-toggle="modal">Entrar</button>
                                 </a>
+                            </div>
+                            <div class="center">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AlterarRankingModal">
+                                    Alterar
+                                </button>
+                            </div>
+                            <div class="center">
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#ExcluirRankingModal">
+                                    Excluir
+                                </button>
                             </div>
                         </div>
                 <?php
@@ -147,6 +160,8 @@ switch ($op) {
         </div>
     <?php } ?>
     <!-- Sessão para criar ranking End -->
+
+
 
     <!-- TODO Uma boa opção seria passar esses modals para um arquivo .php separado, diminuindo o tamando desse arquivo e facilitando na chamada e manutenção -->
     <!-- Modals Start -->
@@ -225,8 +240,8 @@ switch ($op) {
                             </div>
                         </fieldset>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-dismiss="modal">Sair</button>
-                            <input type="submit" class="btn btn-primary" value="criar" name="op">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                            <input type="submit" class="btn btn-primary" value="Criar" name="op">
                         </div>
                     </form>
                 </div>
@@ -234,5 +249,85 @@ switch ($op) {
         </div>
     </div>
     <!-- Criar Ranking Modal End -->
+
+    <!-- Alterar Ranking Modal Start -->
+    <div class="modal fade" id="AlterarRankingModal" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="TituloModalCentralizado">Alterar Ranking</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST">
+                        <div class="form-group row">
+                            <label for="colFormLabel" class="col-sm-2 col-form-label">Nome</label>
+                            <div class="col-sm-10">
+                                <input type="hidden" class="form-control" id="colFormLabel" name="idRanking" value="<?= $rankings["id_ranking"] ?>">
+                                <input type="text" class="form-control" id="colFormLabel" placeholder="Nome do Ranking" name="nmRanking" value="<?= $rankings["nm_ranking"] ?>">
+                            </div>
+                        </div>
+                        <div class="form-row align-items-center">
+                            <label for="colFormLabel" class="col-sm-2 col-form-label">Esporte</label>
+                            <div class="col-auto my-1">
+                                <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect">Privacidade</label>
+                                <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="ieModalidade">
+                                    <option value="0" selected>Basquete</option>
+                                    <option value="1">Futebol</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                        <fieldset class="form-group">
+                            <div class="row">
+                                <legend class="col-form-label col-sm-2 pt-0">Privacidade</legend>
+                                <div class="col-sm-10">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="icPrivacidade" id="gridRadios1" value="0" checked>
+                                        <label class="form-check-label" for="gridRadios1">
+                                            Pública
+                                        </label>
+                                        <input class="form-check-input" type="radio" name="icPrivacidade" id="gridRadios2" value="1">
+                                        <label class="form-check-label" for="gridRadios2">
+                                            Privada
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                            <input type="submit" class="btn btn-primary" value="Alterar" name="op">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Alterar Ranking Modal End -->
+
+    <!-- Excluir Ranking Modal Start -->
+    <div class="modal fade" id="ExcluirRankingModal" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="TituloModalCentralizado">Excluir Ranking?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST">
+                        <input type="hidden" value="<?= $rankings['id_ranking'] ?>" name="idRanking">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <input type="submit" class="btn btn-danger" value="Excluir" name="op">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Excluir Ranking Modal End -->
     <!-- Modals End -->
 </body>

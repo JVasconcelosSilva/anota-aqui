@@ -77,7 +77,7 @@ class Ranking extends connection {
             $query->excluirJogador($jogador['id_jogador'], $idRanking);
         }
 
-        $sql = "DELETE FROM ranking WHERE id_usuario = $idUsuario AND id_ranking = $idRanking";
+        $sql = "DELETE FROM Ranking WHERE fk_Usuario_id_usuario = $idUsuario AND id_ranking = $idRanking";
 
         mysqli_query($con, $sql);
 
@@ -90,7 +90,7 @@ class Ranking extends connection {
 		$connection = new connection();
 		$con = $connection->OpenCon();
 
-        $sql = "UPDATE ranking SET nm_ranking = '$nmRanking', ic_privacidade = '$icPrivacidade' WHERE id_ranking = $idRanking";
+        $sql = "UPDATE Ranking SET nm_ranking = '$nmRanking', ic_privacidade = $icPrivacidade WHERE id_ranking = $idRanking";
 
         mysqli_query($con, $sql);
 
@@ -121,14 +121,14 @@ class Ranking extends connection {
         //$sql = "SELECT a.id_ranking, a.nm_ranking, a.dt_criacao, a.ic_privacidade, u.nm_usuario FROM ranking a, usuario u WHERE a.id_usuario = u.id_usuario AND a.ic_privacidade = '1' AND a.nm_ranking LIKE '$name%'";
         $sql = "SELECT r.id_ranking, r.nm_ranking, r.dt_criacao, r.ic_privacidade, r.ie_modalidade, u.nm_usuario FROM Ranking r, Usuario u WHERE r.fk_Usuario_id_usuario = u.id_usuario AND r.ic_privacidade = 0 AND r.nm_ranking LIKE '$name%'";
         
-
-        $result = mysqli_query($con, $sql);
+        $result = mysqli_fetch_assoc($result = mysqli_query($con, $sql));
 
         $connection->CloseCon($con);
 
         return $result;
 
     }
+
     public function getDonoRanking($idRanking){
         
 		$connection = new connection();

@@ -64,7 +64,6 @@ if (!is_null($email)) {
     <!----------------------------------------Navbar------------------------------------------>
 
     <div class="login">
-        <img src="img/user.png" class="usuario" width="100" height="100" alt="">
         <h1>Login</h1>
         <form method="POST">
             <p>E-mail</p>
