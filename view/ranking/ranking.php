@@ -100,7 +100,7 @@ if ($op == "Remover Moderador") {
     <hr />
 
     <!-- Habilitando botão de adicionar jogador para o dono do ranking Start -->
-    <?php if ($_SESSION['id'] == $dono['fk_Usuario_id_usuario']) { ?>
+    <?php if ($_SESSION['id'] == $dono['fk_id_administrador']) { ?>
         <button class="btn btn-primary" id='addJogador' data-toggle="modal" data-target="#CriarJogador">Adicionar Jogador</button>
     <?php } ?>
     <!-- Habilitando botão de adicionar jogador para o dono do ranking End -->
