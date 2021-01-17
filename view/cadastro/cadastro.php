@@ -16,14 +16,14 @@ if (!is_null($nmEmail)) {
     try{
             if(strlen($nmSenha) >= 8){
                 if($nmSenha == $nmSenha2){
-                if(preg_match('/^[A-Za-z0-9-]+$/', $nmUsuario)){
+                // if(preg_match('/^[A-Za-z0-9-]+$/', $nmUsuario)){
                         $nmSenha = hash('md5', $nmSenha);
                         $query = new Usuario('usuarios');
                         $query->cadastrarUsuario($nmUsuario, $nmSenha, $nmEmail);
                         header('LOCATION: ../Login/login.php');
-                    }else{
-                        $e = 'Nome invalido, só é permitido letras.';
-                    }
+                    // }else{
+                    //     $e = 'Nome invalido, só é permitido letras.';
+                    // }
                 }else{
                   $e = 'As senhas não coincidem.';
                 }
@@ -32,7 +32,7 @@ if (!is_null($nmEmail)) {
                     $e = 'A senha precisa ter no mínimo 8 caracteres.';
                 }
     }catch(Exception $e){
-      $e = 'Ocorreu um erro inesperado, tente novamente.';
+      $e = "Ocorreu um erro inesperado, tente novamente. <br> $e";
     }
 }
 ?>
