@@ -1,6 +1,9 @@
+use anota_aqui_v1_1;
+
 select * from usuario;
 select * from administrador;
 select * from Ranking;
+select * from jogadores_ranking;
 
 delete from ranking where fk_id_administrador = 5;
 
@@ -54,7 +57,7 @@ select id_administrador from administrador where fk_id_usuario = 20;
 SELECT id_ranking, nm_ranking, dt_criacao, ic_privacidade, ie_modalidade FROM Ranking WHERE fk_id_administrador = '20';
 SELECT id_ranking, nm_ranking, dt_criacao, ic_privacidade, ie_modalidade FROM Ranking WHERE fk_id_administrador = (select id_administrador from administrador where fk_id_usuario = 20);
    
-   
+SELECT fk_id_administrador FROM Ranking WHERE id_ranking = 1;   
    
    
    

@@ -127,7 +127,7 @@ if ($op == "Remover Moderador") {
                         <!--Numero de gols do jogador-->
                         <h5 class="gols"><?= $jogador['qt_ponto'] ?> </h5>
                         <?php
-                        if ($_SESSION['id'] == $dono['fk_Usuario_id_usuario']) { ?>
+                        if ($_SESSION['id'] == $dono['fk_id_administrador']) { ?>
                             <div class="col-md-2">
                                 <div class="row" mx-auto>
                                     <!--Adiciona um gol-->
