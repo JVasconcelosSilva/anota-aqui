@@ -72,7 +72,7 @@ if ($op == "Buscar") {
                     <div class="container" id="lista">
 
                         <?php
-                        if (is_null($rankings)) { ?>
+                        if ($dados = mysqli_fetch_assoc($rankings) != null) { ?>
                             <p>Nenhum resultado encontrado</p>
                             <?php } else {
                             foreach ($rankings as $ranking) {

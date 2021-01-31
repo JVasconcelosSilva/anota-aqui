@@ -21,46 +21,42 @@ $nmJogador = $_POST['nmJogador'] ?? null;
 $op = $_POST['op'] ?? null;
 $qtGol = $_POST['qtGolAtual'] ?? null;
 
-if ($op == "Criar") {
-    $query->cadastrarJogador($nmJogador, $idRankings);
-    $nmRankings = $_POST['nmRankings'] ?? null;
-    header('LOCATION: Ranking.php?idRankings=' . $idRankings . "&nmRankings=" . $nmRankings);
-}
-if ($op == "+") {
-    $query->adicionarGol($_POST['idJogador'], $_POST['idRankings'], $qtGol, $_SESSION['id']);
-    $nmRankings = $_POST['nmRankings'] ?? null;
-    header('LOCATION: Ranking.php?idRankings=' . $idRankings . "&nmRankings=" . $nmRankings);
-}
-if ($op == "-") {
-    if ($qtGol > 0) {
-        $query->tirarGol($_POST['idJogador'], $_POST['idRankings'], $qtGol, $_SESSION['id']);
+if ($op != null) {
+    if ($op == "Criar") {
+        $query->cadastrarJogador($nmJogador, $idRankings);
         $nmRankings = $_POST['nmRankings'] ?? null;
         header('LOCATION: Ranking.php?idRankings=' . $idRankings . "&nmRankings=" . $nmRankings);
+    } else if ($op == "+") {
+        $query->adicionarGol($_POST['idJogador'], $_POST['idRankings'], $qtGol, $_SESSION['id']);
+        $nmRankings = $_POST['nmRankings'] ?? null;
+        header('LOCATION: Ranking.php?idRankings=' . $idRankings . "&nmRankings=" . $nmRankings);
+    } else if ($op == "-") {
+        if ($qtGol > 0) {
+            $query->tirarGol($_POST['idJogador'], $_POST['idRankings'], $qtGol, $_SESSION['id']);
+            $nmRankings = $_POST['nmRankings'] ?? null;
+            header('LOCATION: Ranking.php?idRankings=' . $idRankings . "&nmRankings=" . $nmRankings);
+        }
+    } else if ($op == "Alterar") {
+        $query->updateJogador($_POST['idJogadorUpdate'], $_POST['nmNomeUpdate'], $_POST['qtGolUpdate'], $qtGol, $_POST['idRankings'], $_SESSION['id']);
+        $nmRankings = $_POST['nmRankings'] ?? null;
+        header('LOCATION: Ranking.php?idRankings=' . $idRankings . "&nmRankings=" . $nmRankings);
+    } else if ($op == "Excluir") {
+        $query->excluirJogador($_POST['idJogadorUpdate'], $_POST['idRankings']);
+        $nmRankings = $_POST['nmRankings'] ?? null;
+        header('LOCATION: Ranking.php?idRankings=' . $idRankings . "&nmRankings=" . $nmRankings);
+    } else if ($op == "Buscar") {
+        $registros = null;
+        $nmJogador = $_POST['nmJogador'] ?? null;
+        $registros = $query->getJogadoresNome($idRankings, $nmJogador);
+    } else if ($op == "Adicionar Moderador") {
+        $query2->cadastrarModerador($idRankings, $_POST['idModerador'], $dono['id_usuario']);
+        header('LOCATION: Ranking.php?idRankings=' . $idRankings . "&nmRankings=" . $nmRankings, $_SESSION['id']);
+    } else if ($op == "Remover Moderador") {
+        $query2->excluirModerador($idRankings, $_POST['idModerador']);
+        header('LOCATION: Ranking.php?idRankings=' . $idRankings . "&nmRankings=" . $nmRankings, $_SESSION['id']);
     }
 }
-if ($op == "Alterar") {
-    $query->updateJogador($_POST['idJogadorUpdate'], $_POST['nmNomeUpdate'], $_POST['qtGolUpdate'], $qtGol, $_POST['idRankings'], $_SESSION['id']);
-    $nmRankings = $_POST['nmRankings'] ?? null;
-    header('LOCATION: Ranking.php?idRankings=' . $idRankings . "&nmRankings=" . $nmRankings);
-}
-if ($op == "Excluir") {
-    $query->excluirJogador($_POST['idJogadorUpdate'], $_POST['idRankings']);
-    $nmRankings = $_POST['nmRankings'] ?? null;
-    header('LOCATION: Ranking.php?idRankings=' . $idRankings . "&nmRankings=" . $nmRankings);
-}
-if ($op == "Buscar") {
-    $registros = null;
-    $nmJogador = $_POST['nmJogador'] ?? null;
-    $registros = $query->getJogadoresNome($idRankings, $nmJogador);
-}
-if ($op == "Adicionar Moderador") {
-    $query2->cadastrarModerador($idRankings, $_POST['idModerador'], $dono['id_usuario']);
-    header('LOCATION: Ranking.php?idRankings=' . $idRankings . "&nmRankings=" . $nmRankings, $_SESSION['id']);
-}
-if ($op == "Remover Moderador") {
-    $query2->excluirModerador($idRankings, $_POST['idModerador']);
-    header('LOCATION: Ranking.php?idRankings=' . $idRankings . "&nmRankings=" . $nmRankings, $_SESSION['id']);
-}
+
 ?>
 <html>
 
@@ -89,6 +85,14 @@ if ($op == "Remover Moderador") {
         </div>
     </form>
     <!-- Barra de pesquisa de jogador End -->
+
+    <!-- TODO Botão de adicionar moderador Start -->
+    <h2>Moderadores</h2>
+    <a href="../adicionar-moderador/adicionar-moderador.php?idRankings=<?= $idRankings ?>">
+        <button type="button" class="btn btn-primary" data-toggle="modal">Adicionar Moderador</button>
+    </a>
+    <!-- <button class="btn btn-primary" data-toggle="modal" data-target="#Moderadores">Moderadores</button> -->
+    <!-- Botão de adicionar moderador End -->
 
     <!-- Botão para mostar todos os jogadores (vai aparecer apenas quando tiver uma pesquisa feita) Start -->
     <?php if ($op == "Buscar") { ?>
@@ -159,35 +163,35 @@ if ($op == "Remover Moderador") {
             </div>
             </div>
 
-<!-- Modal Para Alteração de Jogador Start (Tem que ficar dentro do foreach para pegar a referência do ID do jogador) -->
-<div class="modal fade" id="AlterarJogador-<?= $jogador["id_jogador"]; ?>" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="TituloModalLongoExemplo"><?= $jogador['nm_jogador'] ?></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+            <!-- Modal Para Alteração de Jogador Start (Tem que ficar dentro do foreach para pegar a referência do ID do jogador) -->
+            <div class="modal fade" id="AlterarJogador-<?= $jogador["id_jogador"]; ?>" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="TituloModalLongoExemplo"><?= $jogador['nm_jogador'] ?></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form method="POST">
+                            <div class="modal-body">
+                                <p><input type="text" class="form-control" name="nmNomeUpdate" id="Nome" value="<?= $jogador['nm_jogador'] ?>"></p>
+                                <p><input type="number" class="form-control" name="qtGolUpdate" id="Gol" value="<?= $jogador['qt_ponto'] ?>"></p>
+                                <input type="hidden" name="idJogadorUpdate" value="<?= $jogador['id_jogador'] ?>">
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-primary" name="op" value="Alterar">
+                                <input type="hidden" name="nmRankings" value="<?= $nmRankings ?>">
+                                <input type="hidden" name="idRankings" value="<?= $idRankings ?>">
+                                <input type="hidden" name="qtGolAtual" value="<?= $jogador['qt_ponto'] ?>">
+                                <input type="submit" class="btn btn-danger" name="op" value="Excluir">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <form method="POST">
-                    <div class="modal-body">
-                        <p><input type="text" class="form-control" name="nmNomeUpdate" id="Nome" value="<?= $jogador['nm_jogador'] ?>"></p>
-                        <p><input type="number" class="form-control" name="qtGolUpdate" id="Gol" value="<?= $jogador['qt_ponto'] ?>"></p>
-                        <input type="hidden" name="idJogadorUpdate" value="<?= $jogador['id_jogador'] ?>">
-                    </div>
-                    <div class="modal-footer">
-                        <input type="submit" class="btn btn-primary" name="op" value="Alterar">
-                        <input type="hidden" name="nmRankings" value="<?= $nmRankings ?>">
-                        <input type="hidden" name="idRankings" value="<?= $idRankings ?>">
-                        <input type="hidden" name="qtGolAtual" value="<?= $jogador['qt_ponto'] ?>">
-                        <input type="submit" class="btn btn-danger" name="op" value="Excluir">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                    </div>
-                </form>
             </div>
-        </div>
-    </div>
-    <!-- Modal Para Alteração de Jogador End (Tem que ficar dentro do foreach para pegar a referência do ID do jogador) -->
+            <!-- Modal Para Alteração de Jogador End (Tem que ficar dentro do foreach para pegar a referência do ID do jogador) -->
 
         <?php }
     } else { ?>
@@ -220,6 +224,59 @@ if ($op == "Remover Moderador") {
         </div>
     </div>
     <!-- Modal Para Cadastro de Jogador End -->
+
+    <!-- TODO Modal Para listagem de moderadores Start -->
+    <div class="modal fade" id="Moderadores" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="TituloModalLongoExemplo">Moderadores</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- <form method="POST" action="Ranking.php?idRankings=<?= $idRankings ?>">
+                    <div class="modal-body">
+                        <p><input type="text" class="form-control  " name="nmJogador" id="Nome" placeholder="Nome do Jogador"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <input type="hidden" name="nmRankings" value="<?= $nmRankings ?>">
+                        <input type="hidden" name="idRankings" value="<?= $idRankings ?>">
+                        <input type="submit" class="btn btn-primary" name="op" value="Criar">
+                    </div>
+                </form> -->
+                <button class="btn btn-primary" data-toggle="modal" data-target="#AdicionarModerador">Adicionar Moderador</button>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Para listagem de moderadores End -->
+
+    <!-- TODO Modal Para adição de moderadores Start -->
+    <div class="modal fade" id="AdicionarModerador" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="TituloModalLongoExemplo">Moderadores</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" action="Ranking.php?idRankings=<?= $idRankings ?>">
+                    <div class="modal-body">
+                        <p><input type="text" class="form-control" name="emailModerador" id="Nome" placeholder="Email do moderador"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <input type="hidden" name="nmRankings" value="<?= $nmRankings ?>">
+                        <input type="hidden" name="idRankings" value="<?= $idRankings ?>">
+                        <input type="submit" class="btn btn-primary" name="pesquisarModerador" value="Pesquisar Moderador">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Para adição de moderadores End -->
 </body>
 <?php
 include '../_footer/footer.php'
