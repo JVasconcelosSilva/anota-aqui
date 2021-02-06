@@ -56,31 +56,51 @@ if (!is_null($email)) {
     <!-- Referência da folha de estilo do cabeçalho -->
     <link rel="stylesheet" href="../_header/header.css">
     <title>Login</title>
+
+    <link rel="stylesheet" href="login.css" type="text/css">
+    <link rel="stylesheet" href="fontes/font-awesome.min.css">
+
+
 </head>
 
 <body>
 
 
     <!----------------------------------------Navbar------------------------------------------>
-
-    <div class="login">
-        <h1>Login</h1>
-        <form method="POST">
-            <p>E-mail</p>
-            <input type="text" name="email" placeholder="Insira o e-mail" required>
-            <p>Senha</p>
-            <input type="password" name="senha" placeholder="Insira a senha" required>
-            <input type="submit" name="login" value="Login">
-            <a href="../Recuperar/recuperar.php">Esqueci a Senha</a>
-            |
-            <a href="../Cadastro/cadastro.php">Cadastre-se</a>
-        </form>
-        <?php if (!is_null($e)) { ?>
-            <div class="alert alert-danger" id="alerta" role="alert">
-                <?= $e ?>
+    
+    
+    <div class="container">
+        <div class="row">
+            <div class="imagem">
+                <img src="teste.jpg">
             </div>
-        <?php } ?>
-    </div>
+
+                <div class="login">
+                    <h1 class="h1">Login</h1>
+                    <form method="POST" class="form">
+                        <p>E-mail</p>
+                        <input type="text" name="email" placeholder="Insira o e-mail" required>
+                        <p>Senha</p>
+                        <input type="password" name="senha" placeholder="Insira a senha" required>
+                        <br>
+                        <input type="submit" name="login" value="Login">
+                        <br>
+                        <a href="../Recuperar/recuperar.php">Esqueci a Senha</a>
+                        |
+                        <a href="../Cadastro/cadastro.php">Cadastre-se</a>
+                    </form>
+                    <?php if (!is_null($e)) { ?>
+                        <div class="alert alert-danger" id="alerta" role="alert">
+                            <?= $e ?>
+                        </div>
+                    <?php } ?>
+                </div>
+            </div>
+</div>
+
+<?php
+include '../_footer/footerLogin.php'
+?>
 </body>
 
 </html>
