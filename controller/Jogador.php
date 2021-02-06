@@ -12,7 +12,7 @@ class Jogador extends connection {
 		$connection = new connection();
 		$con = $connection->OpenCon();
 
-        $sql = "INSERT INTO Jogador (nm_jogador, qt_ponto, fk_Ranking_id_ranking)
+        $sql = "INSERT INTO Jogadores_Ranking (nm_jogador, qt_ponto, fk_id_ranking)
         VALUES ('$nmJogador', 0 ,'$idRanking')";
         
         mysqli_query($con, $sql);
@@ -43,7 +43,7 @@ class Jogador extends connection {
 		$connection = new connection();
 		$con = $connection->OpenCon();
 
-        $sql = "DELETE FROM Jogador WHERE id_jogador = $idJogador";
+        $sql = "DELETE FROM Jogadores_Ranking WHERE id_jogador = $idJogador";
 
         mysqli_query($this->OpenCon(), $sql);
 
@@ -56,7 +56,7 @@ class Jogador extends connection {
 		$connection = new connection();
 		$con = $connection->OpenCon();
         
-        $sql = "UPDATE Jogador SET qt_ponto = qt_ponto + 1 WHERE id_jogador = $idJogador";
+        $sql = "UPDATE Jogadores_Ranking SET qt_ponto = qt_ponto + 1 WHERE id_jogador = $idJogador";
 
         mysqli_query($this->OpenCon(), $sql);
 
@@ -68,7 +68,7 @@ class Jogador extends connection {
 		$connection = new connection();
 		$con = $connection->OpenCon();
         
-        $sql = "UPDATE Jogador SET qt_ponto = qt_ponto - 1 WHERE id_jogador = $idJogador";
+        $sql = "UPDATE Jogadores_Ranking SET qt_ponto = qt_ponto - 1 WHERE id_jogador = $idJogador";
 
         mysqli_query($this->OpenCon(), $sql);
 
@@ -80,7 +80,7 @@ class Jogador extends connection {
 		$connection = new connection();
 		$con = $connection->OpenCon();
 
-        $sql = "UPDATE Jogador SET nm_jogador = '$nmJogador', qt_ponto = '$qtPontoNovo' WHERE id_jogador = $idJogador";
+        $sql = "UPDATE Jogadores_Ranking SET nm_jogador = '$nmJogador', qt_ponto = '$qtPontoNovo' WHERE id_jogador = $idJogador";
 
         mysqli_query($this->OpenCon(), $sql);
 

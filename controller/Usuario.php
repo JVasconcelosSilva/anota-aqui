@@ -25,7 +25,7 @@ class Usuario extends connection
         $con = $connection->OpenCon();
 
         $query = "INSERT INTO usuario (nm_usuario, nm_email, nm_senha) VALUES('$nmUsuario','$nmEmail','$nmSenha')";
-        
+
         if ($con->query($query) === FALSE) {
             throw new Exception($con->error);
         }

@@ -6,8 +6,8 @@
 -- -----------------------------------------------------
 -- Schema anota_aqui_v1.1
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS anota_aqui_v1.1 DEFAULT CHARACTER SET utf8 ;
-USE anota_aqui_v1.1 ;
+CREATE SCHEMA IF NOT EXISTS anota_aqui_v1_1 DEFAULT CHARACTER SET utf8 ;
+USE anota_aqui_v1_1 ;
 
 -- -----------------------------------------------------
 -- Table Usuario
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS Ranking (
 CREATE TABLE IF NOT EXISTS Jogadores_Ranking (
   id_jogador INT PRIMARY KEY AUTO_INCREMENT,
   nm_jogador VARCHAR(40) NOT NULL,
-  qt_ponto INT ZEROFILL NULL,
+  qt_ponto INT NULL,
   fk_id_ranking INT NOT NULL,
   CONSTRAINT fk_Jogadores_Ranking_Ranking
     FOREIGN KEY (fk_id_ranking)
