@@ -4,6 +4,16 @@ select * from usuario;
 select * from administrador;
 select * from Ranking;
 select * from jogadores_ranking;
+select * from Ranking_Moderador;
+select * from moderador;
+
+select moderador_id, u.* from ranking_moderador rm
+inner join moderador m on m.id = rm.Moderador_id 
+inner join usuario u on u.id_usuario = m.fk_id_usuario 
+where Ranking_id_ranking = 1;
+
+delete from moderador where fk_id_usuario = 2;
+delete from ranking_moderador where Ranking_id_ranking = 1;
 
 delete from ranking where fk_id_administrador = 5;
 
@@ -61,7 +71,8 @@ SELECT fk_id_administrador FROM Ranking WHERE id_ranking = 1;
    
    
    
-   
+INSERT INTO moderador (fk_id_usuario) VALUES(1);
+INSERT INTO ranking_moderador (Ranking_id_ranking, Moderador_id) VALUES (1, (select ID from moderador where fk_id_usuario = 1));
    
    
    

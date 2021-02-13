@@ -12,38 +12,22 @@ $infoUsuario = $queryUsuario->selectUsuario($_SESSION['id']);
 
 $op = $_POST['op'] ?? null;
 
-switch ($op) {
-    case "Criar":
-        $query->cadastrarRanking($_POST['nmRankings'], $_POST['icPrivacidade'], $_POST['ieModalidade'], $_SESSION['id']);
-        header('LOCATION: perfil.php');
-        break;
-    case "Alterar":
-        $query->updateRanking($_POST['idRanking'], $_POST['nmRanking'], $_POST['icPrivacidade']);
-        header('LOCATION: perfil.php');
-        break;
-    case "Excluir":
-        $query->excluirRanking($_SESSION['id'], $_POST['idRanking']);
-        header('LOCATION: perfil.php');
-        break;
+if ($op != null) {
+    switch ($op) {
+        case "Criar":
+            $query->cadastrarRanking($_POST['nmRankings'], $_POST['icPrivacidade'], $_POST['ieModalidade'], $_SESSION['id']);
+            header('LOCATION: perfil.php');
+            break;
+        case "Alterar":
+            $query->updateRanking($_POST['idRanking'], $_POST['nmRanking'], $_POST['icPrivacidade']);
+            header('LOCATION: perfil.php');
+            break;
+        case "Excluir":
+            $query->excluirRanking($_SESSION['id'], $_POST['idRanking']);
+            header('LOCATION: perfil.php');
+            break;
+    }
 }
-
-// if ($op == "Excluir") {
-//     $query->excluirRanking($_SESSION['id'], $_POST['idRankings']);
-
-//     header('LOCATION: perfil.php');
-// }
-
-
-// if ($op == "Criar") {
-//     $dtCriacao = date_default_timezone_get();
-//     $query->cadastrarRanking($_POST['nmRankings'], $dtCriacao, $_POST['icPrivacidade'], $_POST['ieModalidade'], $_SESSION['id']);
-//     header('LOCATION: perfil.php');
-// }
-
-// if ($op == "Alterar") {
-//     $query->updateRanking($_POST['idRankings'], $_POST['nmRankings'], $_POST['icPrivacidade']);
-//     header('LOCATION: perfil.php');
-// }
 ?>
 
 <!DOCTYPE html>
