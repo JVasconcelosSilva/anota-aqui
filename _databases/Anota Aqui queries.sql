@@ -7,10 +7,31 @@ select * from jogadores_ranking;
 select * from Ranking_Moderador;
 select * from moderador;
 
-select moderador_id, u.* from ranking_moderador rm
-inner join moderador m on m.id = rm.Moderador_id 
-inner join usuario u on u.id_usuario = m.fk_id_usuario 
-where Ranking_id_ranking = 1;
+SELECT u.id_usuario, u.nm_usuario, u.nm_email, u.nm_caminho_foto 
+FROM usuario u
+left join moderador m on m.fk_id_usuario = u.id_usuario 
+left join ranking_moderador rm on rm.Moderador_id = m.id 
+-- WHERE u.nm_email = 'testSite1@testSite1'
+where rm.Ranking_id_ranking = 1;
+
+SELECT id_usuario, nm_usuario, nm_email, nm_caminho_foto 
+FROM usuario 
+where id
+
+delete from moderador where id = 13;
+
+SELECT Moderador_id FROM Ranking_Moderador WHERE Moderador_id = (SELECT id FROM moderador WHERE fk_id_usuario = 3) AND Ranking_id_ranking = 1;
+DELETE FROM Ranking_Moderador WHERE moderador_id = SELECT Moderador_id FROM Ranking_Moderador WHERE Moderador_id = (SELECT id FROM moderador WHERE fk_id_usuario = 3) AND Ranking_id_ranking = 1;
+
+// Obter o moderador_id antes de ser deletado
+select Moderador_id from Ranking_Moderador where Moderador_id = (select id from moderador where fk_id_usuario = 3) and Ranking_id_ranking = 1;
+delete from Ranking_Moderador where moderador_id = $moderadorId;
+delete from moderador where id = $moderadorId;
+
+SELECT u.id_usuario, u.nm_usuario, u.nm_email, u.nm_caminho_foto FROM ranking_moderador rm
+  INNER JOIN moderador m ON m.id = rm.Moderador_id 
+  INNER JOIN usuario u ON u.id_usuario = m.fk_id_usuario 
+  WHERE Ranking_id_ranking = 1;
 
 delete from moderador where fk_id_usuario = 2;
 delete from ranking_moderador where Ranking_id_ranking = 1;
@@ -24,6 +45,7 @@ INSERT INTO administrador (fk_id_usuario) SELECT id_usuario FROM usuario WHERE n
 
 delete from administrador where fk_id_usuario = 17;
 
+desc Ranking_Moderador;
 
 insert into administrador (fk_id_usuario) values (1);
 INSERT INTO Ranking (nm_ranking, dt_criacao, ic_privacidade, ie_modalidade, fk_id_administrador) VALUES ('Teste Database 1', curdate(), 1, 1, 1);

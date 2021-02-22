@@ -10,7 +10,6 @@ $nmRankings = strtoupper($nmRankings);
 $query = new Jogador('jogador');
 $registros = $query->getJogadoresRanking($idRankings);
 
-$query2 = new Moderador('moderador');
 $Ranking = new Ranking('Ranking');
 $art = $Ranking->getDonoRanking($idRankings);
 $dono = mysqli_fetch_assoc($art);
@@ -48,12 +47,6 @@ if ($op != null) {
         $registros = null;
         $nmJogador = $_POST['nmJogador'] ?? null;
         $registros = $query->getJogadoresNome($idRankings, $nmJogador);
-    } else if ($op == "Adicionar Moderador") {
-        $query2->cadastrarModerador($idRankings, $_POST['idModerador'], $dono['id_usuario']);
-        header('LOCATION: Ranking.php?idRankings=' . $idRankings . "&nmRankings=" . $nmRankings, $_SESSION['id']);
-    } else if ($op == "Remover Moderador") {
-        $query2->excluirModerador($idRankings, $_POST['idModerador']);
-        header('LOCATION: Ranking.php?idRankings=' . $idRankings . "&nmRankings=" . $nmRankings, $_SESSION['id']);
     }
 }
 
@@ -88,8 +81,8 @@ if ($op != null) {
 
     <!-- TODO Botão de adicionar moderador Start -->
     <h2>Moderadores</h2>
-    <a href="../adicionar-moderador/adicionar-moderador.php?idRankings=<?= $idRankings ?>">
-        <button type="button" class="btn btn-primary" data-toggle="modal">Adicionar Moderador</button>
+    <a href="../moderador/moderador.php?idRankings=<?= $idRankings ?>">
+        <button type="button" class="btn btn-primary" data-toggle="modal">Moderadores</button>
     </a>
     <!-- <button class="btn btn-primary" data-toggle="modal" data-target="#Moderadores">Moderadores</button> -->
     <!-- Botão de adicionar moderador End -->
@@ -224,59 +217,6 @@ if ($op != null) {
         </div>
     </div>
     <!-- Modal Para Cadastro de Jogador End -->
-
-    <!-- TODO Modal Para listagem de moderadores Start -->
-    <div class="modal fade" id="Moderadores" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="TituloModalLongoExemplo">Moderadores</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <!-- <form method="POST" action="Ranking.php?idRankings=<?= $idRankings ?>">
-                    <div class="modal-body">
-                        <p><input type="text" class="form-control  " name="nmJogador" id="Nome" placeholder="Nome do Jogador"></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                        <input type="hidden" name="nmRankings" value="<?= $nmRankings ?>">
-                        <input type="hidden" name="idRankings" value="<?= $idRankings ?>">
-                        <input type="submit" class="btn btn-primary" name="op" value="Criar">
-                    </div>
-                </form> -->
-                <button class="btn btn-primary" data-toggle="modal" data-target="#AdicionarModerador">Adicionar Moderador</button>
-            </div>
-        </div>
-    </div>
-    <!-- Modal Para listagem de moderadores End -->
-
-    <!-- TODO Modal Para adição de moderadores Start -->
-    <div class="modal fade" id="AdicionarModerador" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="TituloModalLongoExemplo">Moderadores</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form method="POST" action="Ranking.php?idRankings=<?= $idRankings ?>">
-                    <div class="modal-body">
-                        <p><input type="text" class="form-control" name="emailModerador" id="Nome" placeholder="Email do moderador"></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                        <input type="hidden" name="nmRankings" value="<?= $nmRankings ?>">
-                        <input type="hidden" name="idRankings" value="<?= $idRankings ?>">
-                        <input type="submit" class="btn btn-primary" name="pesquisarModerador" value="Pesquisar Moderador">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- Modal Para adição de moderadores End -->
 </body>
 <?php
 include '../_footer/footer.php'
