@@ -71,8 +71,8 @@ if (!is_null($email)) {
     
     <div class="container">
         <div class="row">
-            <div class="imagem">
-                <img src="teste.jpg">
+           <div class="imagem">
+                <img src="">
             </div>
 
                 <div class="login">

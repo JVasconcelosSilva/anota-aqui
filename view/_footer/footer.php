@@ -36,7 +36,7 @@
 
         <div style="text-align: center;">
             <div>
-                <p> Copyright @2020 All Rights Reserved By:
+                <p> Copyright @2021 All Rights Reserved By:
                     <a href="#" style="text-decoration: none;">
                         <strong class="text-warning"> Anota Aqui </strong>
                     </a>

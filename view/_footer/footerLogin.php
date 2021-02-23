@@ -1,12 +1,12 @@
 <!-- Footer start -->
 <br>
 <br>
-<footer class="bg-dark text-white pb-1">
+<footer class="bg-dark text-white pb-1" style="margin-top: 473px; height: 50px;">
 
-        <hr class="mb-3">
+        <hr>
 
         <div style="text-align: center;">
-                <p> Copyright @2020 All Rights Reserved By:
+                <p> Copyright @2021 All Rights Reserved By:
                     <a href="#" style="text-decoration: none;">
                         <strong class="text-warning"> Anota Aqui </strong>
                     </a>
