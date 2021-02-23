@@ -6,7 +6,7 @@ $dados = null;
 $idRankings = $_GET['idRankings'] ?? null;
 $op = $_POST['op'] ?? null;
 
-$query = new AdicionarModerador('adicionarmoderador');
+$query = new Moderador('moderador');
 
 if ($op != null) {
     switch ($op) {

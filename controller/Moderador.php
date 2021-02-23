@@ -2,7 +2,7 @@
 include_once 'Connection.php';
 include_once 'Ranking.php';
 
-class AdicionarModerador extends connection
+class Moderador extends connection
 {
 
     public function __construct($nome)
@@ -96,6 +96,7 @@ class AdicionarModerador extends connection
     public function removerModerador($idRanking, $idUsuarioModerador)
     {
 
+        // throw new Exception($idRanking, $idUsuarioModerador);
         $connection = new connection();
         $con = $connection->OpenCon();
 

@@ -7,6 +7,15 @@ select * from jogadores_ranking;
 select * from Ranking_Moderador;
 select * from moderador;
 
+-- Obtendo rankings moderados
+SELECT r.id_ranking, r.nm_ranking, r.dt_criacao, r.ic_privacidade, r.ie_modalidade 
+FROM Ranking r
+inner join ranking_moderador rm on rm.Ranking_id_ranking = r.id_ranking
+inner join moderador m on m.id = rm.Moderador_id 
+inner join usuario u on u.id_usuario = m.fk_id_usuario
+WHERE u.id_usuario = 2;
+
+
 SELECT u.id_usuario, u.nm_usuario, u.nm_email, u.nm_caminho_foto 
 FROM usuario u
 left join moderador m on m.fk_id_usuario = u.id_usuario 
@@ -16,7 +25,17 @@ where rm.Ranking_id_ranking = 1;
 
 SELECT id_usuario, nm_usuario, nm_email, nm_caminho_foto 
 FROM usuario 
-where id
+where id_usuario not in (
+select u.id_usuario 
+from usuario u
+left join moderador m on m.fk_id_usuario = u.id_usuario 
+left join ranking_moderador rm on rm.Moderador_id = m.id 
+where rm.Ranking_id_ranking = 1)
+and id_usuario != (
+select fk_id_administrador from Ranking where id_ranking = 
+1);
+
+SELECT id_usuario, nm_usuario, nm_email, nm_caminho_foto FROM usuario WHERE id_usuario NOT IN ( SELECT u.id_usuario FROM usuario u LEFT JOIN moderador m ON m.fk_id_usuario = u.id_usuario LEFT JOIN ranking_moderador rm ON rm.Moderador_id = m.id WHERE rm.Ranking_id_ranking = 1) AND id_usuario != ( SELECT fk_id_administrador FROM Ranking WHERE id_ranking = 1) AND nm_email = 'testSite4@testSite4';
 
 delete from moderador where id = 13;
 

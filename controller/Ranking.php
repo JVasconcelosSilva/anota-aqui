@@ -15,38 +15,12 @@ class Ranking extends connection
         $connection = new connection();
         $con = $connection->OpenCon();
 
-        // $sql = "INSERT INTO ranking (nm_ranking, dt_criacao, ic_privacidade, id_usuario)
-        // VALUES ('$nmRanking', '$dtCriacao', '$icPrivacidade', '$idUsuario')";
-
         $sql = "INSERT INTO Ranking (nm_ranking, dt_criacao, ic_privacidade, ie_modalidade, fk_id_administrador) 
         VALUES ('$nmRanking', curdate(), $icPrivacidade, $ieModalidade, (select id_administrador from administrador where fk_id_usuario = $idUsuario))";
 
         mysqli_query($con, $sql);
-        // if(mysqli_errno($con)){
-        // 	throw new exception(mysqli_errno($con));
-        // }
-
-        //throw Exception("INSERT INTO Ranking (nm_ranking, dt_criacao, ic_privacidade, ie_modalidade, fk_Usuario_id_usuario) VALUES ('$nmRanking', curdate(), $icPrivacidade, $ieModalidade, $idUsuario)");
-
-        // if ($con->query($sql) === FALSE){
-        //     echo "Error: " . $sql . "<br>" . $conn->error;
-        // }
 
         $connection->CloseCon($con);
-
-
-
-
-        // $connection = new connection();
-        // $con = $connection->OpenCon();
-
-        // $query = "INSERT INTO usuario (nm_login, nm_senha, nm_email, nm_usuario) VALUES('','$nmSenha','$nmEmail','$nmUsuario');";
-
-        // if ($con->query($query) === FALSE){
-        //     echo "Error: " . $sql . "<br>" . $conn->error;
-        // }
-
-        // $connection->CloseCon($con);
 
     }
 
@@ -56,15 +30,54 @@ class Ranking extends connection
         $connection = new connection();
         $con = $connection->OpenCon();
 
-        //$sql = "SELECT id_ranking, nm_ranking, dt_criacao, ic_privacidade FROM Ranking WHERE id_usuario = '$idUsuario'";
         $sql = "SELECT id_ranking, nm_ranking, dt_criacao, ic_privacidade, ie_modalidade FROM Ranking WHERE fk_id_administrador = (select id_administrador from administrador where fk_id_usuario = $idUsuario)";
 
         $result = mysqli_query($con, $sql);
-        // $result = mysqli_fetch_assoc($result = mysqli_query($con, $sql));
 
         $connection->CloseCon($con);
 
         return $result;
+    }
+
+    public function getRankingsModerados($idUsuario)
+    {
+
+        $connection = new connection();
+        $con = $connection->OpenCon();
+
+        $sql = "SELECT r.id_ranking, r.nm_ranking
+                FROM Ranking r
+                INNER JOIN ranking_moderador rm ON rm.Ranking_id_ranking = r.id_ranking
+                INNER JOIN moderador m ON m.id = rm.Moderador_id 
+                INNER JOIN usuario u ON u.id_usuario = m.fk_id_usuario
+                WHERE u.id_usuario = $idUsuario";
+
+        $result = mysqli_query($con, $sql);
+
+        $connection->CloseCon($con);
+
+        return $result;
+    }
+
+    public function sairModerador($idUsuario, $idRanking)
+    {
+
+        $connection = new connection();
+        $con = $connection->OpenCon();
+
+        $query = new Jogador("jogador");
+
+        $jogadores = $query->getJogadoresRanking($idRanking);
+
+        foreach ($jogadores as $jogador) {
+            $query->excluirJogador($jogador['id_jogador'], $idRanking);
+        }
+
+        $sql = "DELETE FROM Ranking WHERE id_ranking = $idRanking";
+
+        mysqli_query($con, $sql);
+
+        $connection->CloseCon($con);
     }
 
     public function excluirRanking($idUsuario, $idRanking)

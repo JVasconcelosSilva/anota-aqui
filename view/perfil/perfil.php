@@ -1,7 +1,8 @@
 <?php
 include '../_header/header.php';
 //require __DIR__ . '../../../controller/session.php';
-require __DIR__ . '../../../controller/Ranking.php';
+require __DIR__ . '../../../controller/Moderador.php';
+// require __DIR__ . '../../../controller/Ranking.php';
 require __DIR__ . '../../../controller/Usuario.php';
 
 $numRankings = 0;
@@ -9,6 +10,7 @@ $query = new Ranking('ranking');
 $registros = $query->getRankingsUsuario($_SESSION['id']);
 $queryUsuario = new Usuario('usuario');
 $infoUsuario = $queryUsuario->selectUsuario($_SESSION['id']);
+$rankingsModerados = $query->getRankingsModerados($_SESSION['id']);
 
 $op = $_POST['op'] ?? null;
 
@@ -24,6 +26,11 @@ if ($op != null) {
             break;
         case "Excluir":
             $query->excluirRanking($_SESSION['id'], $_POST['idRanking']);
+            header('LOCATION: perfil.php');
+            break;
+        case "SairModerador":
+            $classModerador = new Moderador('moderador');
+            $classModerador->removerModerador($_POST['idRanking'], $_SESSION['id']);
             header('LOCATION: perfil.php');
             break;
     }
@@ -121,7 +128,7 @@ if ($op != null) {
     </div>
     <!-- Lista de rankings End -->
 
-
+    <hr>
     <!-- Sessão para criar ranking Start -->
     <?php
     if ($numRankings  < 3) { ?>
@@ -142,7 +149,71 @@ if ($op != null) {
         </div>
     <?php } ?>
     <!-- Sessão para criar ranking End -->
+    <hr>
+    <h4>RANKINGS MODERADOS</h4>
+    <!-- Lista de rankings Start -->
+    <h1 id="nome">Meus Rankings</h1>
 
+    <div class="wrap">
+        <?php
+        if (is_null(mysqli_fetch_assoc($rankingsModerados))) {
+        ?>
+            <p>Você ainda não tem rankings</p>
+            <?php
+        } else {
+            foreach ($rankingsModerados as $rankingModerado) {
+            ?>
+                <div class="box one">
+                    <div class="date">
+                    </div>
+                    <h1><?= $rankingModerado['nm_ranking'] ?></h1>
+                    <br>
+                    <div class="text-box">
+                        <div class="container">
+                            <div class="center">
+                                <a href="../ranking/ranking.php?idRankings=<?= $rankingModerado['id_ranking'] ?>&nmRankings=<?= strtoupper($rankingModerado['nm_ranking']) ?>">
+                                    <button type="button" class="btn btn-primary" data-toggle="modal">Entrar</button>
+                                </a>
+                            </div>
+                            <div class="center">
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#SairModeradorModal-<?= $_SESSION['id'] ?>">
+                                    Sair
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Modal Para remoção de moderadores Start (Tem que ficar dentro do foreach para pegar a referência do ID)-->
+                        <div class="modal fade" id="SairModeradorModal-<?= $_SESSION['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="TituloModalLongoExemplo">Sair do ranking <?= $rankingModerado['nm_ranking'] ?></h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form method="POST">
+                                        <p>Deseja sair do ranking <?= $rankingModerado['nm_ranking'] ?>?</p>
+                                        <input type="hidden" name="idUsuarioModerador" value="<?= $_SESSION['id'] ?>">
+                                        <input type="hidden" name="idRanking" value="<?= $rankingModerado['id_ranking'] ?>">
+                                        <div class="input-group-append">
+                                            <input type="hidden" name="op" value="SairModerador">
+                                            <input class="btn btn-success" type="submit" value="Sim">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Não</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal Para remoção de moderadores End -->
+                <?php
+            }
+        }
+                ?>
+                    </div>
+                </div>
+    </div>
+    <!-- Lista de rankings End -->
 
 
     <!-- TODO Uma boa opção seria passar esses modals para um arquivo .php separado, diminuindo o tamando desse arquivo e facilitando na chamada e manutenção -->
