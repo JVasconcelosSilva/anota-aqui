@@ -48,12 +48,14 @@ if (!is_null($nmEmail)) {
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>Cadastro</title>
-    <link rel="stylesheet" href="login.css" type="text/css">
+
+    <link rel="stylesheet" href="cadastro.css" type="text/css">
     <link rel="stylesheet" href="fontes/font-awesome.min.css">
+    
   </head>
   <body>
     
-    <div class="login">
+    <div class="cadastro">
         <h1>Cadastro</h1>
         <form method="POST">
             <p>Usuário</p>
@@ -73,6 +75,10 @@ if (!is_null($nmEmail)) {
             </div>
             <?php }?>
     </div>
+
+    <?php
+    include '../_footer/footerCadastro.php'
+    ?>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

@@ -1,7 +1,7 @@
 <!-- Footer start -->
 <br>
 <br>
-<footer class="bg-dark text-white pb-1" style="margin-top: 473px; height: 50px;">
+<footer class="bg-dark text-white pb-1" style="margin-top: 527px; height: 50px;">
 
         <hr>
 
