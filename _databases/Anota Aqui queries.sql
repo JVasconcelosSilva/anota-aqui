@@ -15,13 +15,30 @@ inner join moderador m on m.id = rm.Moderador_id
 inner join usuario u on u.id_usuario = m.fk_id_usuario
 WHERE u.id_usuario = 2;
 
+select fk_id_administrador from ranking where id_ranking = 1;
+
+SELECT distinct u.id_usuario
+FROM ranking r
+inner join ranking_moderador rm on rm.Ranking_id_ranking = r.id_ranking
+inner join moderador m on m.id = rm.Moderador_id 
+inner join administrador a on a.id_administrador = r.fk_id_administrador  
+inner join usuario u on u.id_usuario = m.fk_id_usuario or u.id_usuario = a.fk_id_usuario  
+where r.id_ranking = 1;
+
+SELECT DISTINCT u.id_usuario 
+FROM ranking r 
+inner join ranking_moderador rm ON rm.Ranking_id_ranking = r.id_ranking 
+inner join moderador m ON m.id = rm.Moderador_id 
+inner join administrador a ON a.id_administrador = r.fk_id_administrador 
+inner join usuario u ON u.id_usuario = m.fk_id_usuario OR u.id_usuario = a.fk_id_usuario 
+where r.id_ranking = 1;
 
 SELECT u.id_usuario, u.nm_usuario, u.nm_email, u.nm_caminho_foto 
-FROM usuario u
-left join moderador m on m.fk_id_usuario = u.id_usuario 
-left join ranking_moderador rm on rm.Moderador_id = m.id 
--- WHERE u.nm_email = 'testSite1@testSite1'
-where rm.Ranking_id_ranking = 1;
+FROM ranking r
+inner join administrador a on a.id_administrador = r.fk_id_administrador  
+inner join usuario u on u.id_usuario = a.fk_id_usuario
+where r.id_ranking = 1;
+
 
 SELECT id_usuario, nm_usuario, nm_email, nm_caminho_foto 
 FROM usuario 

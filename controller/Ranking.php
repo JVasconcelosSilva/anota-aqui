@@ -21,7 +21,6 @@ class Ranking extends connection
         mysqli_query($con, $sql);
 
         $connection->CloseCon($con);
-
     }
 
     public function getRankingsUsuario($idUsuario)
@@ -146,20 +145,54 @@ class Ranking extends connection
         return $result;
     }
 
-    public function getDonoRanking($idRanking)
+    public function verifyDono($sessionId, $idRanking)
     {
 
         $connection = new connection();
         $con = $connection->OpenCon();
 
-        //$sql = "SELECT id_usuario FROM ranking WHERE id_ranking = '$idRanking'";
+        $sql = "SELECT fk_id_administrador FROM ranking WHERE id_ranking = $idRanking";
 
-        $sql = "SELECT fk_id_administrador FROM Ranking WHERE id_ranking = $idRanking";
+        // $result = mysqli_query($con, $sql);
+        $result = mysqli_fetch_assoc($result = mysqli_query($con, $sql));
 
-        $result = mysqli_query($con, $sql);
+        $isDono = false;
+
+        if ($sessionId == $result["fk_id_administrador"]) {
+            $isDono = true;
+        }
 
         $connection->CloseCon($con);
 
-        return $result;
+        return $isDono;
+    }
+
+    public function verifyIsAdm($sessionId, $idRanking)
+    {
+
+        $connection = new connection();
+        $con = $connection->OpenCon();
+
+        $sql = "SELECT DISTINCT u.id_usuario
+                FROM ranking r
+                inner join ranking_moderador rm ON rm.Ranking_id_ranking = r.id_ranking
+                inner join moderador m ON m.id = rm.Moderador_id 
+                inner join administrador a ON a.id_administrador = r.fk_id_administrador  
+                inner join usuario u ON u.id_usuario = m.fk_id_usuario OR u.id_usuario = a.fk_id_usuario  
+                where r.id_ranking = $idRanking";
+
+        $result = mysqli_query($con, $sql);
+
+        $isAdm = false;
+
+        foreach ($result as $ids) {
+            if ($sessionId == $ids['id_usuario']) {
+                $isAdm = true;
+            }
+        }
+
+        $connection->CloseCon($con);
+
+        return $isAdm;
     }
 }

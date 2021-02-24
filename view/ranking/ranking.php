@@ -11,8 +11,8 @@ $query = new Jogador('jogador');
 $registros = $query->getJogadoresRanking($idRankings);
 
 $Ranking = new Ranking('Ranking');
-$art = $Ranking->getDonoRanking($idRankings);
-$dono = mysqli_fetch_assoc($art);
+$isDono = $Ranking->verifyDono($_SESSION['id'], $idRankings);
+$isAdm = $Ranking->verifyIsAdm($_SESSION['id'], $idRankings);
 
 $op = null;
 $contador = 0;
@@ -80,10 +80,12 @@ if ($op != null) {
     <!-- Barra de pesquisa de jogador End -->
 
     <!-- TODO Botão de adicionar moderador Start -->
-    <h2>Moderadores</h2>
-    <a href="../moderador/moderador.php?idRankings=<?= $idRankings ?>">
-        <button type="button" class="btn btn-primary" data-toggle="modal">Moderadores</button>
-    </a>
+    <?php if ($isDono) { ?>
+        <h2>Moderadores</h2>
+        <a href="../moderador/moderador.php?idRankings=<?= $idRankings ?>">
+            <button type="button" class="btn btn-primary" data-toggle="modal">Moderadores</button>
+        </a>
+    <?php } ?>
     <!-- <button class="btn btn-primary" data-toggle="modal" data-target="#Moderadores">Moderadores</button> -->
     <!-- Botão de adicionar moderador End -->
 
@@ -97,7 +99,7 @@ if ($op != null) {
     <hr />
 
     <!-- Habilitando botão de adicionar jogador para o dono do ranking Start -->
-    <?php if ($_SESSION['id'] == $dono['fk_id_administrador']) { ?>
+    <?php if ($isAdm) { ?>
         <button class="btn btn-primary" id='addJogador' data-toggle="modal" data-target="#CriarJogador">Adicionar Jogador</button>
     <?php } ?>
     <!-- Habilitando botão de adicionar jogador para o dono do ranking End -->
@@ -124,7 +126,7 @@ if ($op != null) {
                         <!--Numero de gols do jogador-->
                         <h5 class="gols"><?= $jogador['qt_ponto'] ?> </h5>
                         <?php
-                        if ($_SESSION['id'] == $dono['fk_id_administrador']) { ?>
+                        if ($isAdm) { ?>
                             <div class="col-md-2">
                                 <div class="row" mx-auto>
                                     <!--Adiciona um gol-->
