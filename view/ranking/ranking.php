@@ -99,7 +99,7 @@ if ($op != null) {
     <hr />
 
     <!-- Habilitando botão de adicionar jogador para o dono do ranking Start -->
-    <?php if ($isAdm) { ?>
+    <?php if ($isDono) { ?>
         <button class="btn btn-primary" id='addJogador' data-toggle="modal" data-target="#CriarJogador">Adicionar Jogador</button>
     <?php } ?>
     <!-- Habilitando botão de adicionar jogador para o dono do ranking End -->
@@ -124,12 +124,18 @@ if ($op != null) {
                             <h5 class="nome mt-4 mx-auto" style="font-size: 30px;"><?= $jogador['nm_jogador'] ?></h5>
                         </div class="col-auto mx-auto">
                         <!--Numero de gols do jogador-->
-                        <h5 class="gols"><?= $jogador['qt_ponto'] ?> </h5>
+                        <h5 class="gols" id="pontos"><?= $jogador['qt_ponto'] ?> </h5>
                         <?php
                         if ($isAdm) { ?>
                             <div class="col-md-2">
                                 <div class="row" mx-auto>
                                     <!--Adiciona um gol-->
+                                    <!-- TODO Atualizando valores com jquery -->
+                                    <!-- <a onclick="addItemToUsersList()"> Add </a> -->
+                                    <script>
+                                        var pontos = document.getElementsByTagName("pontos");
+                                    </script>
+                                    <input type="submit" onclick="addItemToUsersList(<?= $jogador['id_jogador'] ?>, <?= $idRankings ?>, <?= $isAdm?>)" value="Add" class="btn btn-primary" />
                                     <form method="POST">
                                         <input type="hidden" name="nmRankings" value="<?= $nmRankings ?>">
                                         <input type="hidden" name="idRankings" value="<?= $idRankings ?>">
@@ -158,6 +164,10 @@ if ($op != null) {
             </div>
             </div>
 
+            <div id="dados">
+
+            </div>
+
             <!-- Modal Para Alteração de Jogador Start (Tem que ficar dentro do foreach para pegar a referência do ID do jogador) -->
             <div class="modal fade" id="AlterarJogador-<?= $jogador["id_jogador"]; ?>" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -179,7 +189,9 @@ if ($op != null) {
                                 <input type="hidden" name="nmRankings" value="<?= $nmRankings ?>">
                                 <input type="hidden" name="idRankings" value="<?= $idRankings ?>">
                                 <input type="hidden" name="qtGolAtual" value="<?= $jogador['qt_ponto'] ?>">
-                                <input type="submit" class="btn btn-danger" name="op" value="Excluir">
+                                <?php if ($isDono) { ?>
+                                    <input type="submit" class="btn btn-danger" name="op" value="Excluir">
+                                <?php } ?>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                             </div>
                         </form>
@@ -223,5 +235,27 @@ if ($op != null) {
 <?php
 include '../_footer/footer.php'
 ?>
+
+<!-- TODO jquery -->
+<script type="text/javascript">
+    function addItemToUsersList(idJogador, idRanking, isAdm) {
+        $.ajax({
+            'url': '../../controller/test.php',
+            'type': 'POST',
+            'dataType': 'json',
+            'data': {
+                idJogador: idJogador,
+                idRanking: idRanking,
+                isAdm: isAdm
+            },
+            success: function(msg) {
+                throw new Exception(msg);
+                $("#dados").html(msg);
+            }
+        });
+    }
+</script>
+
+
 
 </html>

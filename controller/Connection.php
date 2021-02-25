@@ -7,7 +7,6 @@ class connection
     {
 
         $con = mysqli_init();
-        // mysqli_real_connect($con, "localhost", "root", "", "db_prototipo_ranking", 3306);
         mysqli_real_connect($con, "localhost", "root", "", "anota_aqui_v1_1", 3306);
 
         return $con;
