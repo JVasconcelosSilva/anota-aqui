@@ -99,7 +99,7 @@ if ($op != null) {
     <hr />
 
     <!-- Habilitando botão de adicionar jogador para o dono do ranking Start -->
-    <?php if ($isAdm) { ?>
+    <?php if ($isDono) { ?>
         <button class="btn btn-primary" id='addJogador' data-toggle="modal" data-target="#CriarJogador">Adicionar Jogador</button>
     <?php } ?>
     <!-- Habilitando botão de adicionar jogador para o dono do ranking End -->
@@ -179,7 +179,9 @@ if ($op != null) {
                                 <input type="hidden" name="nmRankings" value="<?= $nmRankings ?>">
                                 <input type="hidden" name="idRankings" value="<?= $idRankings ?>">
                                 <input type="hidden" name="qtGolAtual" value="<?= $jogador['qt_ponto'] ?>">
-                                <input type="submit" class="btn btn-danger" name="op" value="Excluir">
+                                <?php if ($isDono) { ?>
+                                    <input type="submit" class="btn btn-danger" name="op" value="Excluir">
+                                <?php } ?>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                             </div>
                         </form>
