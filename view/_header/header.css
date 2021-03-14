@@ -26,3 +26,12 @@ ul {
   #botao{
     margin-right: 10px;
   }
+
+  .input-group-prepend{
+    margin-right: 15px;
+    margin-top: 5px;
+  }
+  
+  .nome{
+    margin-left: 15px;
+  }

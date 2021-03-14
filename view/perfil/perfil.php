@@ -43,6 +43,9 @@ if ($op != null) {
 <head>
     <!-- Referência da folha de estilo do cabeçalho -->
     <link rel="stylesheet" href="../_header/header.css">
+    <link rel="stylesheet" href="estiloPerfil.css" type="text/css">
+    <link rel="stylesheet" href="fontes/font-awesome.min.css">
+
     <title>Perfil</title>
 </head>
 
@@ -277,14 +280,14 @@ if ($op != null) {
                         <br>
                         <fieldset class="form-group">
                             <div class="row">
-                                <legend class="col-form-label col-sm-2 pt-0">Privacidade</legend>
+                                <legend class="col-form-label col-sm-2 pt-0">Privacidade:</legend>
                                 <div class="col-sm-10">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="icPrivacidade" id="gridRadios1" value="0" checked>
+                                        <input class="form-check-input1" type="radio" name="icPrivacidade" id="gridRadios1" value="0" checked>
                                         <label class="form-check-label" for="gridRadios1">
                                             Pública
                                         </label>
-                                        <input class="form-check-input" type="radio" name="icPrivacidade" id="gridRadios2" value="1">
+                                        <input class="form-check-input2" type="radio" name="icPrivacidade" id="gridRadios2" value="1">
                                         <label class="form-check-label" for="gridRadios2">
                                             Privada
                                         </label>
@@ -341,11 +344,11 @@ if ($op != null) {
                                     <legend class="col-form-label col-sm-2 pt-0">Privacidade</legend>
                                     <div class="col-sm-10">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="icPrivacidade" id="gridRadios1" value="0" checked>
+                                            <input class="form-check-input1" type="radio" name="icPrivacidade" id="gridRadios1" value="0" checked>
                                             <label class="form-check-label" for="gridRadios1">
                                                 Pública
                                             </label>
-                                            <input class="form-check-input" type="radio" name="icPrivacidade" id="gridRadios2" value="1">
+                                            <input class="form-check-input2" type="radio" name="icPrivacidade" id="gridRadios2" value="1">
                                             <label class="form-check-label" for="gridRadios2">
                                                 Privada
                                             </label>

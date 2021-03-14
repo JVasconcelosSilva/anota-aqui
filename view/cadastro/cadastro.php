@@ -54,9 +54,10 @@ if (!is_null($nmEmail)) {
     
   </head>
   <body>
-    
+
+ 
     <div class="cadastro">
-        <h1>Cadastro</h1>
+        <h1 class="nome">Cadastro</h1>
         <form method="POST">
             <p>Usuário</p>
             <input type="text" name="nmUsuario" placeholder="Insira o nome" required>
@@ -75,6 +76,7 @@ if (!is_null($nmEmail)) {
             </div>
             <?php }?>
     </div>
+    
 
     <?php
     include '../_footer/footerCadastro.php'

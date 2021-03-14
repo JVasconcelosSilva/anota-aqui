@@ -28,7 +28,7 @@ $nomeArtilharia = $_POST['nmRanking'] ?? null;
     <!-- TODO Navbar DEV-MODE start -->
     <!-- Navbar start -->
     <ul>
-        <li><a href="/">Anota Aqui</a></li>
+        <li class="nome"><a href="/">Anota Aqui</a></li>
         <li style="float:right">
             <!-- Button com dropdown start -->
             <!-- TODO style mockado, passar para CSS -->

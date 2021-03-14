@@ -1,32 +1,7 @@
 body{
     margin: 0;
     padding: 0;
-    font-family: "confortaa", sans-serif;
 }
-
-/*.imagem{
-    height: 100px;
-    width: 100px;
-    margin-top: 140px;
-    margin-left: 50px;
-}
-
-.login{
-    margin-left: 500px;
-    margin-top: 96px;
-    border-width: 5px;
-    border-style:solid;
-    width: 300px;
-    height: 350px;
-}
-
-.h1{
-    text-align: center;
-}
-
-.form{
-    text-align: center;
-}*/
 
 .login{
     width: 320px;
@@ -44,14 +19,9 @@ body{
 }
 
 .h1{
-    margin: 0;
-    padding-top: 0;
-    padding-left: 0;
-    padding-bottom: 20px;
-    letter-spacing: 10px;
-    text-transform: uppercase;
-    text-align: center;
-    font-size: 25px;
+  text-align: center;
+  margin-bottom: 20px;
+  margin-top: -20px;
 }
 
 .login p{
