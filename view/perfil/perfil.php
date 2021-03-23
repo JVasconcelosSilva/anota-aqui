@@ -50,8 +50,11 @@ if ($op != null) {
 </head>
 
 <body>
-    <h1>Perfil</h1>
+        <h1 class="perfil">Perfil</h1>
+
     <?php foreach ($infoUsuario as $usuario) { ?>
+
+        <div class="imag">
 
         <?php if ($usuario['nm_caminho_foto'] != null) { ?>
             <button type="button" data-toggle="modal" data-target="#UploadImageModal"><img src="../../user-uploads/images/<?= $usuario['nm_caminho_foto'] ?>" style=" height:170px;
@@ -64,21 +67,28 @@ if ($op != null) {
     max-width:180px;"></button>
         <?php } ?>
 
+        </div>
+
+        <div class="nomeuser">
         <h4><?= $usuario['nm_usuario'] ?></h4>
     <?php } ?>
+        </div>
 
+    <hr>
     <!-- Menu do perfil Start -->
-    <ul>
-        <li>
-            <a class="dropdown-item" href="view/Publica/publica.php">Rankings</a>
+    <ul class="menu">
+        <li class="opção1">
+            <a class="dropdown-item" href="view/Publica/publica.php">Rankings</a> 
         </li>
-        <li>
+        <li class="opção2">
             <a class="dropdown-item" href="view/Publica/publica.php">Conquistas</a>
         </li>
-        <li>
+        <li class="opção3">
             <a class="dropdown-item" href="view/Publica/publica.php">Informações</a>
         </li>
     </ul>
+
+    <hr>
     <!-- Menu do perfil End -->
 
     <!-- TODO incluír uma "página" dento dessa pode ser feita da seguinte forma,

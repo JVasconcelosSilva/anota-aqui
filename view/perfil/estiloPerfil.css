@@ -9,6 +9,56 @@
 }
 
 /*************************************
+    Perfil, Nome, Imagem e Opções
+*************************************/
+
+.perfil{
+    margin-top: 30px;
+    margin-left: 48.5%;
+    font-size: 60px;
+}
+
+.imag{
+    margin-left: 47%;
+}
+
+.nomeuser{
+    margin-left: 51%;
+    margin-bottom: 35px;
+}
+
+.menu{
+    background-color: white;
+    margin-left: 20%;
+}
+
+.opção1{
+    font-size: 30px;
+    width: 300px;
+    text-align: center;
+    margin-left: 50px;
+}
+
+.opção2{
+    font-size: 30px;
+    width: 300px;
+    text-align: center;
+    margin-left: 50px;
+}
+
+.opção3{
+    font-size: 30px;
+    width: 300px;
+    text-align: center;
+    margin-left: 50px;
+}
+
+.opção3:hover{
+    background-color: darkgrey;
+    border-radius: 10px;
+}
+
+/*************************************
 Dentro "Criar Ranking - Privacidade"
 *************************************/
 
