@@ -57,14 +57,10 @@ if ($op != null) {
         <div class="imag">
 
         <?php if ($usuario['nm_caminho_foto'] != null) { ?>
-            <button type="button" data-toggle="modal" data-target="#UploadImageModal"><img src="../../user-uploads/images/<?= $usuario['nm_caminho_foto'] ?>" style=" height:170px;
-    width:auto;/*maintain aspect ratio*/
-    max-width:180px;"></button>
+            <button type="button" data-toggle="modal" data-target="#UploadImageModal"><img src="../../user-uploads/images/<?= $usuario['nm_caminho_foto'] ?>" class="estilo"></button>
         <?php } else { ?>
             <!-- TODO style mockado para manter padrão de tamanho da imagem, passar para CSS -->
-            <button type="button" data-toggle="modal" data-target="#UploadImageModal"><img src="../../user-uploads/images/default-user.png" style=" height:170px;
-    width:auto;/*maintain aspect ratio*/
-    max-width:180px;"></button>
+            <button type="button" data-toggle="modal" data-target="#UploadImageModal"><img src="../../user-uploads/images/default-user.png" class="estilo"></button>
         <?php } ?>
 
         </div>
@@ -74,21 +70,25 @@ if ($op != null) {
     <?php } ?>
         </div>
 
-    <hr>
     <!-- Menu do perfil Start -->
     <ul class="menu">
         <li class="opção1">
+            <hr class="hr3">
             <a class="dropdown-item" href="view/Publica/publica.php">Rankings</a> 
+            <hr class="hr3">
         </li>
         <li class="opção2">
+            <hr class="hr3">
             <a class="dropdown-item" href="view/Publica/publica.php">Conquistas</a>
+            <hr class="hr3">
         </li>
         <li class="opção3">
+            <hr class="hr3">
             <a class="dropdown-item" href="view/Publica/publica.php">Informações</a>
+            <hr class="hr3">
         </li>
     </ul>
 
-    <hr>
     <!-- Menu do perfil End -->
 
     <!-- TODO incluír uma "página" dento dessa pode ser feita da seguinte forma,
@@ -97,13 +97,29 @@ if ($op != null) {
     <?php /*include '../publica/publica.php';*/ ?>
 
     <!-- Lista de rankings Start -->
-    <h1 id="nome">Meus Rankings</h1>
+    
+<div class="container-teste">
+  <div class="row">
+    <div class="teste1">
+      Uma de três colunas
+    </div>
+    <div class="teste2">
+      Uma de três colunas
+    </div>
+    <div class="teste3">
+      Uma de três colunas
+    </div>
+  </div>
+</div>
 
-    <div class="wrap">
+
+    <div class="ranking">
+    <h1 class="nomerank">Meus Rankings</h1>
+    <hr class="hr3">
         <?php
         if (is_null(mysqli_fetch_assoc($registros))) {
         ?>
-            <p>Você ainda não tem rankings</p>
+            <p class="rankmens">Você ainda não tem rankings</p>
             <?php
         } else {
             foreach ($registros as $rankings) {
@@ -112,21 +128,21 @@ if ($op != null) {
                 <div class="box one">
                     <div class="date">
                     </div>
-                    <h1><?= $rankings['nm_ranking'] ?></h1>
+                    <h1 class="rankcriado"><?= $rankings['nm_ranking'] ?></h1>
                     <br>
                     <div class="text-box">
                         <div class="container">
-                            <div class="center">
+                            <div class="rankentrar">
                                 <a href="../ranking/ranking.php?idRankings=<?= $rankings['id_ranking'] ?>&nmRankings=<?= strtoupper($rankings['nm_ranking']) ?>">
                                     <button type="button" class="btn btn-primary" data-toggle="modal">Entrar</button>
                                 </a>
                             </div>
-                            <div class="center">
+                            <div class="rankalterar">
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AlterarRankingModal">
                                     Alterar
                                 </button>
                             </div>
-                            <div class="center">
+                            <div class="rankexcluir">
                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#ExcluirRankingModal">
                                     Excluir
                                 </button>
@@ -142,13 +158,16 @@ if ($op != null) {
     <!-- Lista de rankings End -->
 
     <hr>
+    
     <!-- Sessão para criar ranking Start -->
+    <div class="criar">
     <?php
     if ($numRankings  < 3) { ?>
         <div class="box one">
             <div class="date">
             </div>
-            <h4>CRIAR RANKING</h4>
+            <h4 class="nomecriar">Criar Ranking</h4>
+            <hr class="hr3">
             <br>
             <div class="text-box">
                 <div class="container">
@@ -161,9 +180,12 @@ if ($op != null) {
             </div>
         </div>
     <?php } ?>
+    </div>
     <!-- Sessão para criar ranking End -->
     <hr>
-    <h4>RANKINGS MODERADOS</h4>
+    <div class="moderadores">
+    <h4 class="nomemoderados">Rankings Moderados</h4>
+    <hr class="hr3">
     <!-- Lista de rankings Start -->
     <h1 id="nome">Meus Rankings</h1>
 
@@ -226,6 +248,7 @@ if ($op != null) {
                     </div>
                 </div>
     </div>
+    </div>
     <!-- Lista de rankings End -->
 
 
@@ -243,9 +266,9 @@ if ($op != null) {
                 </div>
                 <div class="modal-body">
                     <form action="../../controller/ImageUpload.php" method="post" enctype="multipart/form-data">
-                        Selecione uma imagem de perfil:
+                        <p class="arquivoescrita">Selecione uma imagem de perfil:</p>
                         <input type="file" name="fileToUpload" id="fileToUpload">
-                        <input type="submit" value="Salvar imagem" name="submit">
+                        <input class="arquivo" type="submit" value="Salvar imagem" name="submit">
 
                         <!-- Exibe o botao de remover imagem caso o usuario ja tenha uma imagem -->
                         <?php if ($usuario['nm_caminho_foto'] != null) { ?>

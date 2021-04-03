@@ -9,17 +9,28 @@
 }
 
 /*************************************
+               Foto
+*************************************/
+
+.estilo{
+    height:170px;
+    width:auto;/*maintain aspect ratio*/
+    max-width:180px;"
+}
+
+/*************************************
     Perfil, Nome, Imagem e Opções
 *************************************/
 
 .perfil{
     margin-top: 30px;
-    margin-left: 48.5%;
-    font-size: 60px;
+    margin-left: 49%;
+    font-size: 50px;
+    margin-bottom: 30px;
 }
 
 .imag{
-    margin-left: 47%;
+    margin-left: 46%;
 }
 
 .nomeuser{
@@ -29,33 +40,41 @@
 
 .menu{
     background-color: white;
-    margin-left: 20%;
+    margin-left: 12%;
 }
 
 .opção1{
-    font-size: 30px;
+    font-size: 25px;
     width: 300px;
     text-align: center;
     margin-left: 50px;
 }
 
 .opção2{
-    font-size: 30px;
+    font-size: 25px;
     width: 300px;
     text-align: center;
     margin-left: 50px;
 }
 
 .opção3{
-    font-size: 30px;
+    font-size: 25px;
     width: 300px;
     text-align: center;
     margin-left: 50px;
 }
 
-.opção3:hover{
-    background-color: darkgrey;
-    border-radius: 10px;
+/*************************************
+           Selecionar Foto
+*************************************/
+
+.arquivoescrita{
+    margin-top: 5px;
+}
+
+.arquivo{
+    margin-top: 20px;
+    margin-left: 175px;
 }
 
 /*************************************
@@ -73,4 +92,126 @@ Dentro "Criar Ranking - Privacidade"
 
 .form-check-input1{
     margin-left: 32px;
+}
+
+/*************************************
+                CARDS
+*************************************/
+
+.tudo{
+    width: 1500px;
+}
+
+.ranking{
+    /*background-color: darkorange;*/
+    width: 350px;
+    height: 400px;
+    margin-left: 50px;
+    margin-top: 50px;
+    border-radius: 5px;
+    border-style: groove;
+}
+
+.criar {
+    /*background-color: darkorchid;*/
+    width: 350px;
+    height: 400px;
+    margin-top: -432px;
+    margin-left: 500px;
+    border-radius: 5px;
+    border-style: groove;
+}
+
+.moderadores {
+    /*background-color: deeppink;*/
+    width: 350px;
+    height: 400px;
+    margin-top: -432px;
+    margin-left: 950px;
+    border-radius: 5px;
+    border-style: groove;
+}
+
+.nomemoderados{
+    font-size: 25px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.nomecriar{
+    font-size: 25px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.hr3 {
+    border: 0;
+    height: 2px;
+    background-image: linear-gradient(to right, transparent, #CCC, transparent);  
+}
+
+
+/*************************************
+                Ranking
+*************************************/
+.nomerank{
+    font-size: 25px;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.rankmens{
+    text-align: center;
+    margin-top: 130px;
+    font-size: 18px;
+}
+
+.rankcriado{
+    font-size: 22px;
+    margin-left: 22px;
+}
+
+.rankentrar{
+    margin-top: -60px;
+    margin-left: 80px;
+}
+
+.rankalterar{
+    margin-top: -38px;
+    margin-left: 160px;
+}
+
+.rankexcluir{
+    margin-top: -38px;
+    margin-left: 245px;
+}
+
+
+
+
+
+
+
+
+
+.container-teste{
+    background-color:darkgray
+}
+
+.teste1{
+    background-color: darkorange;
+    width: 350px;
+    margin-left: 70px;
+}
+
+.teste2{
+    background-color: darkorange;
+    width: 350px;
+    margin-left: 95px;
+}
+
+.teste3{
+    background-color: darkorange;
+    width: 350px;
+    margin-left: 95px;
 }
