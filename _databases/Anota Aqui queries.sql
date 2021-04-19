@@ -1,4 +1,4 @@
-use anota_aqui_v1_1;
+use anota_aqui;
 
 select * from usuario;
 select * from administrador;
@@ -133,8 +133,63 @@ INSERT INTO moderador (fk_id_usuario) VALUES(1);
 INSERT INTO ranking_moderador (Ranking_id_ranking, Moderador_id) VALUES (1, (select ID from moderador where fk_id_usuario = 1));
    
    
+-- Consultas da classe Campeonato
+
+alter table campeonato 
+modify column 
+id_campeonato INT PRIMARY KEY auto_increment;
+commit;
+
+alter table times add constraint fk_Times_Campeonato
+    FOREIGN KEY (fk_id_campeonato)
+    REFERENCES Campeonato (id_campeonato);
    
-   
+   CREATE TABLE IF NOT EXISTS Times (
+  id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  nome VARCHAR(50) NULL);
+ 
+ alter table ranking_campeonato add column fk_times_id INT NOT NULL;
+ 
+ alter table ranking_campeonato add constraint fk_Ranking_campeonato_Times
+    FOREIGN KEY (fk_times_id)
+    REFERENCES Times (id);
+ 
+
+select * from campeonato;
+select * from ranking_campeonato;
+select * from partida;
+select * from pontos_partida;
+select * from jogadores_times;
+
+insert into ranking_campeonato (nome, pontos, vitorias, empates, derrotas, gols_feitos, gols_sofridos, saldo_gols, fk_id_campeonato, Partida_id_partida)
+ values ('testTime1', 0, 0, 0, 0, 0, 0, 0, 4, null);
+
+-- Criar campeonato -- ok
+INSERT INTO campeonato (nm_campeonato, dt_criacao, ic_privacidade, ie_modalidade, fk_id_administrador) 
+        VALUES ('$nmRanking', curdate(), $icPrivacidade, $ieModalidade, (select id_administrador from administrador where fk_id_usuario = $idUsuario));
+  
+-- getCampeonatosUsuario -- ok
+SELECT id_campeonato, nm_campeonato, dt_criacao, ic_privacidade, ie_modalidade FROM campeonato WHERE fk_id_administrador = (select id_administrador from administrador where fk_id_usuario = $idUsuario);
+
+
+
+
+-- excluirCampeonato
+-- Dependente de outras classes
+
+
+-- updateCampeonato
+UPDATE campeonato SET nm_campeonato = '$nmRanking', ic_privacidade = $icPrivacidade WHERE id_campeonato = $idCampeonato;
+
+
+-- getCampeonatos
+SELECT c.id_campeonato, c.nm_campeonato, c.dt_criacao, c.ic_privacidade, c.ie_modalidade, u.nm_usuario FROM campeonato c, Usuario u WHERE c.fk_Usuario_id_usuario = u.id_usuario AND c.ic_privacidade = 0;
+
+-- TODO fk_usuario_id_usuario não reconhecido
+-- getCampeonatosByName
+SELECT c.id_ranking, c.nm_ranking, c.dt_criacao, r.ic_privacidade, r.ie_modalidade, u.nm_usuario FROM Ranking r, Usuario u WHERE r.fk_Usuario_id_usuario = u.id_usuario AND c.ic_privacidade = 0 AND r.nm_ranking LIKE '$name%';
+
+
    
    
    
