@@ -70,7 +70,9 @@ if ($op != null) {
     <?php } ?>
         </div>
 
+
     <!-- Menu do perfil Start -->
+    <!-- -->
     <ul class="menu">
         <li class="opção1">
             <hr class="hr3">
@@ -88,7 +90,7 @@ if ($op != null) {
             <hr class="hr3">
         </li>
     </ul>
-
+    -->
     <!-- Menu do perfil End -->
 
     <!-- TODO incluír uma "página" dento dessa pode ser feita da seguinte forma,
@@ -97,7 +99,8 @@ if ($op != null) {
     <?php /*include '../publica/publica.php';*/ ?>
 
     <!-- Lista de rankings Start -->
-    
+
+<!--    
 <div class="container-teste">
   <div class="row">
     <div class="teste1">
@@ -111,7 +114,7 @@ if ($op != null) {
     </div>
   </div>
 </div>
-
+-->
 
     <div class="ranking">
     <h1 class="nomerank">Meus Rankings</h1>
