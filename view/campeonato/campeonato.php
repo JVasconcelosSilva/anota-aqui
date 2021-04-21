@@ -7,18 +7,17 @@ $nomeCampeonato = null;
 $idCampeonato = $_GET['idCampeonato'] ?? null;
 $nmCampeonato = $_GET['nmCampeonato'] ?? null;
 $nmCampeonato = strtoupper($nmCampeonato);
-// $query = new Jogador('jogador');
-// $registros = $query->getJogadoresCampeonato($idCampeonato);
 
-$Campeonato = new Campeonato('Campeonato');
-// $isDono = $Campeonato->verifyDono($_SESSION['id'], $idCampeonato);
-// $isAdm = $Campeonato->verifyIsAdm($_SESSION['id'], $idCampeonato);
+$campeonato = new Campeonato('Campeonato');
+$isDono = $campeonato->verifyDonoCampeonato($_SESSION['id'], $idCampeonato);
+$rankingCampeonato = $campeonato->getRankingCampeonato($_SESSION['id'], $idCampeonato);
 
 $op = null;
 $contador = 0;
 $nmJogador = $_POST['nmJogador'] ?? null;
 $op = $_POST['op'] ?? null;
 $qtGol = $_POST['qtGolAtual'] ?? null;
+
 
 if ($op != null) {
     if ($op == "Criar") {
@@ -56,6 +55,7 @@ if ($op != null) {
 <head>
     <!-- Referência da folha de estilo do cabeçalho -->
     <link rel="stylesheet" href="../_header/header.css">
+    <link rel="stylesheet" href="campeonato.css">
     <title>Index</title>
 </head>
 
@@ -63,42 +63,64 @@ if ($op != null) {
     <h2><?= $nmCampeonato ?></h2>
     <hr class="star-dark mb-5">
 
-    <!-- Menu do perfil Start -->
-    <ul class="menu">
-        <li class="opção1">
-            <a class="dropdown-item" href="view/Publica/publica.php">Ranking</a>
-        </li>
-        <li class="opção2">
-            <a class="dropdown-item" href="view/Publica/publica.php">Equipes</a>
-        </li>
-        <li class="opção3">
-            <a class="dropdown-item" href="view/Publica/publica.php">Configurações</a>
-        </li>
-    </ul>
-
+    <!-- TODO test tabs Start -->
+    <nav class="nav_tabs">
+        <ul>
+            <li>
+                <input type="radio" id="tab1" class="rd_tab" name="tabs" checked>
+                <label for="tab1" class="tab_label">Ranking</label>
+                <div class="tab-content">
+                    <article>
+                        <!-- TODO Tabela ranking campeonato Start -->
+                        <table style="width:100%">
+                            <tr>
+                                <th>Equipe</th>
+                                <th>Pts.</th>
+                                <th>Jogos</th>
+                                <th>Vit.</th>
+                                <th>D</th>
+                            </tr>
+                            <?php
+                            if ($rankingCampeonato != null) {
+                                foreach ($rankingCampeonato as $time) {
+                            ?>
+                                    <tr>
+                                        <td><?= $time['nome'] ?></td>
+                                        <td><?= $time['pontos'] ?></td>
+                                        <td>-</td>
+                                        <td><?= $time['vitorias'] ?></td>
+                                        <td><?= $time['derrotas'] ?></td>
+                                    </tr>
+                            <?php }
+                            } ?>
+                        </table>
+                        <!-- TODO Tabela ranking campeonato Start -->
+                    </article>
+                </div>
+            </li>
+            <li>
+                <input type="radio" name="tabs" class="rd_tab" id="tab2">
+                <label for="tab2" class="tab_label">Equipes</label>
+                <div class="tab-content">
+                    <article>
+                        Sed sit amet mauris vitae lorem pretium congue. Donec pulvinar auctor est, a porta ipsum vulputate ac. Ut sit amet sollicitudin ante. Sed gravida nulla et nibh consequat sagittis. Donec eu justo eu tortor elementum scelerisque. Mauris mollis volutpat tellus, id volutpat massa ultricies vel. Donec mollis arcu leo, ac ullamcorper eros viverra ut. Aliquam cursus justo nec purus condimentum, eu dignissim nunc mattis. Sed fermentum sollicitudin felis mattis malesuada. Quisque tempor tellus a odio euismod, non suscipit justo laoreet. Curabitur vel urna lorem. Pellentesque semper justo leo, in tristique ex porta at. Sed justo massa, lobortis quis hendrerit ac, eleifend vitae tellus.
+                    </article>
+                </div>
+            </li>
+            <li>
+                <input type="radio" name="tabs" class="rd_tab" id="tab3">
+                <label for="tab3" class="tab_label">Configurações</label>
+                <div class="tab-content">
+                    <article>
+                        Integer at ligula eget turpis elementum ultrices eget quis tortor. Duis posuere lorem justo, ut malesuada tortor tempus a. Curabitur pellentesque ultricies consectetur. Maecenas diam lorem, hendrerit eget sem ut, tincidunt vulputate ipsum. In vel enim et erat sagittis eleifend vel eu nunc. In hac habitasse platea dictumst. Integer tincidunt, augue at posuere eleifend, lacus quam hendrerit risus, aliquam sollicitudin ligula tellus quis elit. Proin varius fringilla vehicula. Phasellus mollis sollicitudin orci, id fringilla magna volutpat non. Nullam sed luctus nisl.
+                    </article>
+                </div>
+            </li>
+        </ul>
+    </nav>
+    <!-- TODO test tabs End -->
     <hr>
     <!-- Menu do perfil End -->
-
-    <!-- TODO Tabela ranking campeonato Start -->
-    <table style="width:100%">
-        <tr>
-            <th>Equipe</th>
-            <th>Pts.</th>
-            <th>Jogos</th>
-            <th>Vit.</th>
-            <th>D</th>
-        </tr>
-        <!-- TODO for Start -->
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        <!-- TODO for End -->
-    </table>
-    <!-- TODO Tabela ranking campeonato Start -->
 
     <hr />
     <!-- Barra de pesquisa de jogador Start -->
@@ -115,17 +137,6 @@ if ($op != null) {
         </div>
     </form>
     <!-- Barra de pesquisa de jogador End -->
-
-
-    <!-- TODO Botão de adicionar moderador Start -->
-    <?php if ($isDono) { ?>
-        <h2>Moderadores</h2>
-        <a href="../moderador/moderador.php?idCampeonato=<?= $idCampeonato ?>">
-            <button type="button" class="btn btn-primary" data-toggle="modal">Moderadores</button>
-        </a>
-    <?php } ?>
-    <!-- <button class="btn btn-primary" data-toggle="modal" data-target="#Moderadores">Moderadores</button> -->
-    <!-- Botão de adicionar moderador End -->
 
     <!-- Botão para mostar todos os jogadores (vai aparecer apenas quando tiver uma pesquisa feita) Start -->
     <?php if ($op == "Buscar") { ?>

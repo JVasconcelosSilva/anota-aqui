@@ -16,8 +16,7 @@ class Campeonato extends connection
         $con = $connection->OpenCon();
 
         $sql = "INSERT INTO campeonato (nm_campeonato, dt_criacao, ic_privacidade, ie_modalidade, fk_id_administrador) 
-        VALUES ('$nmCampeonato', curdate(), $icPrivacidade, $ieModalidade, (select id_administrador from administrador where fk_id_usuario = $idUsuario));
-  ";
+        VALUES ('$nmCampeonato', curdate(), $icPrivacidade, $ieModalidade, (select id_administrador from administrador where fk_id_usuario = $idUsuario));";
 
         mysqli_query($con, $sql);
 
@@ -107,14 +106,22 @@ class Campeonato extends connection
     }
 
     // Functions de Ranking Campeonato
-    public function getRankingCampeonato()
+    public function getRankingCampeonato($idUsuario, $idCampeonato)
     {
         $connection = new connection();
         $con = $connection->OpenCon();
 
-        // $sql = "SELECT r.id_ranking, r.nm_ranking, r.dt_criacao, r.ic_privacidade, r.ie_modalidade, u.nm_usuario FROM Ranking r, Usuario u WHERE r.fk_Usuario_id_usuario = u.id_usuario AND r.ic_privacidade = 0 AND r.nm_ranking LIKE '$name%'";
+        $sql = "select t.nome as nome, rc.* from ranking_campeonato rc
+                inner join campeonato c on c.id_campeonato = rc.fk_id_campeonato
+                inner join administrador a on a.id_administrador = c.fk_id_administrador 
+                inner join usuario u on u.id_usuario = a.fk_id_usuario
+                inner join times t on t.fk_id_ranking_campeonato = rc.id
+                where rc.fk_id_campeonato = $idCampeonato
+                and u.id_usuario = $idUsuario";
 
-        $result = mysqli_fetch_assoc($result = mysqli_query($con, $sql));
+        // $result = mysqli_fetch_assoc($result = mysqli_query($con, $sql));
+
+        $result = mysqli_query($this->OpenCon(), $sql);
 
         $connection->CloseCon($con);
 
@@ -126,27 +133,27 @@ class Campeonato extends connection
     // Functions de Configurações Campeonato
 
     // functions de moderador, não aplicavel para campeonato
-    // public function verifyDonoCampeonato($sessionId, $idRanking)
-    // {
+    public function verifyDonoCampeonato($sessionId, $idCampeonato)
+    {
 
-    //     $connection = new connection();
-    //     $con = $connection->OpenCon();
+        $connection = new connection();
+        $con = $connection->OpenCon();
 
-    //     $sql = "SELECT fk_id_administrador FROM ranking WHERE id_ranking = $idRanking";
+        $sql = "SELECT fk_id_administrador FROM campeonato WHERE id_campeonato = $idCampeonato";
 
-    //     // $result = mysqli_query($con, $sql);
-    //     $result = mysqli_fetch_assoc($result = mysqli_query($con, $sql));
+        // $result = mysqli_query($con, $sql);
+        $result = mysqli_fetch_assoc($result = mysqli_query($con, $sql));
 
-    //     $isDono = false;
+        $isDono = false;
 
-    //     if ($sessionId == $result["fk_id_administrador"]) {
-    //         $isDono = true;
-    //     }
+        if ($sessionId == $result["fk_id_administrador"]) {
+            $isDono = true;
+        }
 
-    //     $connection->CloseCon($con);
+        $connection->CloseCon($con);
 
-    //     return $isDono;
-    // }
+        return $isDono;
+    }
 
     // public function verifyIsAdmCampeonato($sessionId, $idRanking)
     // {

@@ -72,25 +72,12 @@ if ($op != null) {
 
         <div class="imag">
 
-<<<<<<< HEAD
         <?php if ($usuario['nm_caminho_foto'] != null) { ?>
             <button type="button" data-toggle="modal" data-target="#UploadImageModal"><img src="../../user-uploads/images/<?= $usuario['nm_caminho_foto'] ?>" class="estilo"></button>
         <?php } else { ?>
             <!-- TODO style mockado para manter padrão de tamanho da imagem, passar para CSS -->
             <button type="button" data-toggle="modal" data-target="#UploadImageModal"><img src="../../user-uploads/images/default-user.png" class="estilo"></button>
         <?php } ?>
-=======
-            <?php if ($usuario['nm_caminho_foto'] != null) { ?>
-                <button type="button" data-toggle="modal" data-target="#UploadImageModal"><img src="../../user-uploads/images/<?= $usuario['nm_caminho_foto'] ?>" style=" height:170px;
-    width:auto;/*maintain aspect ratio*/
-    max-width:180px;"></button>
-            <?php } else { ?>
-                <!-- TODO style mockado para manter padrão de tamanho da imagem, passar para CSS -->
-                <button type="button" data-toggle="modal" data-target="#UploadImageModal"><img src="../../user-uploads/images/default-user.png" style=" height:170px;
-    width:auto;/*maintain aspect ratio*/
-    max-width:180px;"></button>
-            <?php } ?>
->>>>>>> master
 
         </div>
 
@@ -99,7 +86,6 @@ if ($op != null) {
         <?php } ?>
         </div>
 
-<<<<<<< HEAD
 
     <!-- Menu do perfil Start -->
     <!-- -->
@@ -120,33 +106,13 @@ if ($op != null) {
             <hr class="hr3">
         </li>
     </ul>
-    -->
     <!-- Menu do perfil End -->
-=======
-        <hr>
-        <!-- Menu do perfil Start -->
-        <ul class="menu">
-            <li class="opção1">
-                <a class="dropdown-item" href="view/Publica/publica.php">Rankings</a>
-            </li>
-            <li class="opção2">
-                <a class="dropdown-item" href="view/Publica/publica.php">Conquistas</a>
-            </li>
-            <li class="opção3">
-                <a class="dropdown-item" href="view/Publica/publica.php">Informações</a>
-            </li>
-        </ul>
-
-        <hr>
-        <!-- Menu do perfil End -->
->>>>>>> master
 
         <!-- TODO incluír uma "página" dento dessa pode ser feita da seguinte forma,
          porém, elementos como o header e classes chamadas na página original não
          podem ser chamadas aqui, criar uma página sem esses elementos. -->
         <?php /*include '../publica/publica.php';*/ ?>
 
-<<<<<<< HEAD
     <!-- Lista de rankings Start -->
 
 <!--    
@@ -172,17 +138,12 @@ if ($op != null) {
         if (is_null(mysqli_fetch_assoc($registros))) {
         ?>
             <p class="rankmens">Você ainda não tem rankings</p>
-=======
-        <!-- Lista de rankings Start -->
-        <h1 id="nome">Meus Rankings</h1>
-
-        <div class="wrap">
->>>>>>> master
-            <?php
-            if (is_null(mysqli_fetch_assoc($registros))) {
-            ?>
-<<<<<<< HEAD
-                <div class="box one">
+                <?php
+            } else {
+                foreach ($registros as $rankings) {
+                    $numRankings++;
+                ?>
+                    <div class="box one">
                     <div class="date">
                     </div>
                     <h1 class="rankcriado"><?= $rankings['nm_ranking'] ?></h1>
@@ -205,37 +166,6 @@ if ($op != null) {
                                 </button>
                             </div>
                         </div>
-=======
-                <p>Você ainda não tem rankings</p>
->>>>>>> master
-                <?php
-            } else {
-                foreach ($registros as $rankings) {
-                    $numRankings++;
-                ?>
-                    <div class="box one">
-                        <div class="date">
-                        </div>
-                        <h1><?= $rankings['nm_ranking'] ?></h1>
-                        <br>
-                        <div class="text-box">
-                            <div class="container">
-                                <div class="center">
-                                    <a href="../ranking/ranking.php?idRankings=<?= $rankings['id_ranking'] ?>&nmRankings=<?= strtoupper($rankings['nm_ranking']) ?>">
-                                        <button type="button" class="btn btn-primary" data-toggle="modal">Entrar</button>
-                                    </a>
-                                </div>
-                                <div class="center">
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AlterarRankingModal">
-                                        Alterar
-                                    </button>
-                                </div>
-                                <div class="center">
-                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#ExcluirRankingModal">
-                                        Excluir
-                                    </button>
-                                </div>
-                            </div>
                     <?php
                 }
             }
@@ -245,7 +175,6 @@ if ($op != null) {
         </div>
         <!-- Lista de rankings End -->
 
-<<<<<<< HEAD
     <hr>
     
     <!-- Sessão para criar ranking Start -->
@@ -275,34 +204,8 @@ if ($op != null) {
     <div class="moderadores">
     <h4 class="nomemoderados">Rankings Moderados</h4>
     <hr class="hr3">
-    <!-- Lista de rankings Start -->
-    <h1 id="nome">Meus Rankings</h1>
-=======
-        <hr>
-        <!-- Sessão para criar ranking Start -->
-        <?php
-        if ($numRankings  < 3) { ?>
-            <div class="box one">
-                <div class="date">
-                </div>
-                <h4>CRIAR RANKING</h4>
-                <br>
-                <div class="text-box">
-                    <div class="container">
-                        <div class="center">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#CriarRankingModal">
-                                Criar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <?php } ?>
-        <!-- Sessão para criar ranking End -->
-        <hr>
-        <!-- Lista de Campeonatos Start -->
-        <h1 id="nome">Meus Campeonatos</h1>
->>>>>>> master
+    <!-- Lista de campeonatos Start -->
+    <h1 id="nome">Meus Campeonatos</h1>
 
         <div class="wrap">
             <?php
@@ -348,41 +251,10 @@ if ($op != null) {
         <hr>
         <!-- Sessão para criar campeonato Start -->
         <?php
-        if ($numRankings  < 3) { ?>
+        if ($numCampeonatos  < 3) { ?>
             <div class="box one">
                 <div class="date">
                 </div>
-<<<<<<< HEAD
-    </div>
-    </div>
-    <!-- Lista de rankings End -->
-
-
-    <!-- TODO Uma boa opção seria passar esses modals para um arquivo .php separado, diminuindo o tamando desse arquivo e facilitando na chamada e manutenção -->
-    <!-- Modals Start -->
-    <!-- Upload Image Modal Start -->
-    <div class="modal fade" id="UploadImageModal" tabindex="-1" role="dialog" aria-labelledby="TituloModalCentralizado" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="TituloModalCentralizado">Mudar foto</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="../../controller/ImageUpload.php" method="post" enctype="multipart/form-data">
-                        <p class="arquivoescrita">Selecione uma imagem de perfil:</p>
-                        <input type="file" name="fileToUpload" id="fileToUpload">
-                        <input class="arquivo" type="submit" value="Salvar imagem" name="submit">
-
-                        <!-- Exibe o botao de remover imagem caso o usuario ja tenha uma imagem -->
-                        <?php if ($usuario['nm_caminho_foto'] != null) { ?>
-                            <input type="submit" value="Remover imagem" name="remove">
-                        <?php } ?>
-
-                    </form>
-=======
                 <h4>CRIAR CAMPEONATO</h4>
                 <br>
                 <div class="text-box">
@@ -393,7 +265,6 @@ if ($op != null) {
                             </button>
                         </div>
                     </div>
->>>>>>> master
                 </div>
             </div>
         <?php } ?>

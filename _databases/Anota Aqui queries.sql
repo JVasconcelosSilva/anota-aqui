@@ -7,6 +7,11 @@ select * from jogadores_ranking;
 select * from Ranking_Moderador;
 select * from moderador;
 
+-- Consultar um ranking passando o id do ranking para a function
+select p.* from (select @getJogadoresRanking:=1 f) s, vw_ranking p;
+-- Consultar um jogador no ranking
+select p.* from (select @getJogadoresRanking:=1 f) s, vw_ranking p where p.nm_jogador = 'testJogador4';
+
 -- Obtendo rankings moderados
 SELECT r.id_ranking, r.nm_ranking, r.dt_criacao, r.ic_privacidade, r.ie_modalidade 
 FROM Ranking r
@@ -185,15 +190,42 @@ UPDATE campeonato SET nm_campeonato = '$nmRanking', ic_privacidade = $icPrivacid
 -- getCampeonatos
 SELECT c.id_campeonato, c.nm_campeonato, c.dt_criacao, c.ic_privacidade, c.ie_modalidade, u.nm_usuario FROM campeonato c, Usuario u WHERE c.fk_Usuario_id_usuario = u.id_usuario AND c.ic_privacidade = 0;
 
--- TODO fk_usuario_id_usuario não reconhecido
+-- TODO fk_usuario_id_usuario nï¿½o reconhecido
 -- getCampeonatosByName
 SELECT c.id_ranking, c.nm_ranking, c.dt_criacao, r.ic_privacidade, r.ie_modalidade, u.nm_usuario FROM Ranking r, Usuario u WHERE r.fk_Usuario_id_usuario = u.id_usuario AND c.ic_privacidade = 0 AND r.nm_ranking LIKE '$name%';
 
+SELECT fk_id_administrador FROM campeonato WHERE fk_id_administrador = $sessionId;
 
+-- getRankingCampeonato
+select t.nome, rc.* from ranking_campeonato rc
+inner join campeonato c on c.id_campeonato = rc.fk_id_campeonato
+inner join administrador a on a.id_administrador = c.fk_id_administrador 
+inner join usuario u on u.id_usuario = a.fk_id_usuario
+inner join times t on t.fk_id_ranking_campeonato = rc.id
+where rc.fk_id_campeonato = 4
+and u.id_usuario = $idUsuario;
+
+
+-- Criar ranking campeonato
+insert into ranking_campeonato (fk_id_campeonato) values (5);
+-- Adicionar um time ao ranking campeonato
+insert into times (nome, fk_id_ranking_campeonato) values ("testTime5", 4);
+delete from ranking_campeonato where id = 5;
+delete from times;
+
+select * from ranking_campeonato rc;
+select * from campeonato c;
+select * from times t;
    
-   
-   
-   
+ALTER TABLE anota_aqui.ranking_campeonato MODIFY COLUMN Partida_id_partida int(11) DEFAULT NULL;
+
+   alter table times add column
+ fk_id_ranking_campeonato int not null;
+ 
+ 
+  alter table times add CONSTRAINT fk_id_ranking_campeonato
+    FOREIGN KEY (fk_id_ranking_campeonato)
+    REFERENCES ranking_campeonato (id)  
    
    
    
