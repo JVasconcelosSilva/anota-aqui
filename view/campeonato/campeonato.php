@@ -1,18 +1,18 @@
 <?php
 include '../_header/header.php';
 require __DIR__ . '../../../controller/Moderador.php';
-require __DIR__ . '../../../controller/Ranking.php';
+require __DIR__ . '../../../controller/Campeonato.php';
 
-$nomeRanking = null;
-$idRankings = $_GET['idRankings'] ?? null;
-$nmRankings = $_GET['nmRankings'] ?? null;
-$nmRankings = strtoupper($nmRankings);
-$query = new Jogador('jogador');
-$registros = $query->getJogadoresRanking($idRankings);
+$nomeCampeonato = null;
+$idCampeonato = $_GET['idCampeonato'] ?? null;
+$nmCampeonato = $_GET['nmCampeonato'] ?? null;
+$nmCampeonato = strtoupper($nmCampeonato);
+// $query = new Jogador('jogador');
+// $registros = $query->getJogadoresCampeonato($idCampeonato);
 
-$Ranking = new Ranking('Ranking');
-$isDono = $Ranking->verifyDono($_SESSION['id'], $idRankings);
-$isAdm = $Ranking->verifyIsAdm($_SESSION['id'], $idRankings);
+$Campeonato = new Campeonato('Campeonato');
+// $isDono = $Campeonato->verifyDono($_SESSION['id'], $idCampeonato);
+// $isAdm = $Campeonato->verifyIsAdm($_SESSION['id'], $idCampeonato);
 
 $op = null;
 $contador = 0;
@@ -22,31 +22,31 @@ $qtGol = $_POST['qtGolAtual'] ?? null;
 
 if ($op != null) {
     if ($op == "Criar") {
-        $query->cadastrarJogador($nmJogador, $idRankings);
-        $nmRankings = $_POST['nmRankings'] ?? null;
-        header('LOCATION: Ranking.php?idRankings=' . $idRankings . "&nmRankings=" . $nmRankings);
+        $query->cadastrarJogador($nmJogador, $idCampeonato);
+        $nmCampeonato = $_POST['nmCampeonato'] ?? null;
+        header('LOCATION: Campeonato.php?idCampeonato=' . $idCampeonato . "&nmCampeonato=" . $nmCampeonato);
     } else if ($op == "+") {
-        $query->adicionarGol($_POST['idJogador'], $_POST['idRankings'], $qtGol, $_SESSION['id']);
-        $nmRankings = $_POST['nmRankings'] ?? null;
-        header('LOCATION: Ranking.php?idRankings=' . $idRankings . "&nmRankings=" . $nmRankings);
+        $query->adicionarGol($_POST['idJogador'], $_POST['idCampeonato'], $qtGol, $_SESSION['id']);
+        $nmCampeonato = $_POST['nmCampeonato'] ?? null;
+        header('LOCATION: Campeonato.php?idCampeonato=' . $idCampeonato . "&nmCampeonato=" . $nmCampeonato);
     } else if ($op == "-") {
         if ($qtGol > 0) {
-            $query->tirarGol($_POST['idJogador'], $_POST['idRankings'], $qtGol, $_SESSION['id']);
-            $nmRankings = $_POST['nmRankings'] ?? null;
-            header('LOCATION: Ranking.php?idRankings=' . $idRankings . "&nmRankings=" . $nmRankings);
+            $query->tirarGol($_POST['idJogador'], $_POST['idCampeonato'], $qtGol, $_SESSION['id']);
+            $nmCampeonato = $_POST['nmCampeonato'] ?? null;
+            header('LOCATION: Campeonato.php?idCampeonato=' . $idCampeonato . "&nmCampeonato=" . $nmCampeonato);
         }
     } else if ($op == "Alterar") {
-        $query->updateJogador($_POST['idJogadorUpdate'], $_POST['nmNomeUpdate'], $_POST['qtGolUpdate'], $qtGol, $_POST['idRankings'], $_SESSION['id']);
-        $nmRankings = $_POST['nmRankings'] ?? null;
-        header('LOCATION: Ranking.php?idRankings=' . $idRankings . "&nmRankings=" . $nmRankings);
+        $query->updateJogador($_POST['idJogadorUpdate'], $_POST['nmNomeUpdate'], $_POST['qtGolUpdate'], $qtGol, $_POST['idCampeonato'], $_SESSION['id']);
+        $nmCampeonato = $_POST['nmCampeonato'] ?? null;
+        header('LOCATION: Campeonato.php?idCampeonato=' . $idCampeonato . "&nmCampeonato=" . $nmCampeonato);
     } else if ($op == "Excluir") {
-        $query->excluirJogador($_POST['idJogadorUpdate'], $_POST['idRankings']);
-        $nmRankings = $_POST['nmRankings'] ?? null;
-        header('LOCATION: Ranking.php?idRankings=' . $idRankings . "&nmRankings=" . $nmRankings);
+        $query->excluirJogador($_POST['idJogadorUpdate'], $_POST['idCampeonato']);
+        $nmCampeonato = $_POST['nmCampeonato'] ?? null;
+        header('LOCATION: Campeonato.php?idCampeonato=' . $idCampeonato . "&nmCampeonato=" . $nmCampeonato);
     } else if ($op == "Buscar") {
         $registros = null;
         $nmJogador = $_POST['nmJogador'] ?? null;
-        $registros = $query->getJogadoresNome($idRankings, $nmJogador);
+        $registros = $query->getJogadoresNome($idCampeonato, $nmJogador);
     }
 }
 
@@ -60,8 +60,45 @@ if ($op != null) {
 </head>
 
 <body>
-    <h2><?= $nmRankings ?></h2>
+    <h2><?= $nmCampeonato ?></h2>
     <hr class="star-dark mb-5">
+
+    <!-- Menu do perfil Start -->
+    <ul class="menu">
+        <li class="opção1">
+            <a class="dropdown-item" href="view/Publica/publica.php">Ranking</a>
+        </li>
+        <li class="opção2">
+            <a class="dropdown-item" href="view/Publica/publica.php">Equipes</a>
+        </li>
+        <li class="opção3">
+            <a class="dropdown-item" href="view/Publica/publica.php">Configurações</a>
+        </li>
+    </ul>
+
+    <hr>
+    <!-- Menu do perfil End -->
+
+    <!-- TODO Tabela ranking campeonato Start -->
+    <table style="width:100%">
+        <tr>
+            <th>Equipe</th>
+            <th>Pts.</th>
+            <th>Jogos</th>
+            <th>Vit.</th>
+            <th>D</th>
+        </tr>
+        <!-- TODO for Start -->
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <!-- TODO for End -->
+    </table>
+    <!-- TODO Tabela ranking campeonato Start -->
 
     <hr />
     <!-- Barra de pesquisa de jogador Start -->
@@ -70,8 +107,8 @@ if ($op != null) {
             <div class="input-group border rounded">
                 <input type="text" class="form-control border-0" placeholder="Buscar Jogador" aria-label="Buscar Jogador" aria-describedby="basic-addon2" name="nmJogador">
                 <div class="input-group-append">
-                    <input type="hidden" name="nmRankings" value="<?= $nmRankings ?>">
-                    <input type="hidden" name="idRankings" value="<?= $idRankings ?>">
+                    <input type="hidden" name="nmCampeonato" value="<?= $nmCampeonato ?>">
+                    <input type="hidden" name="idCampeonato" value="<?= $idCampeonato ?>">
                     <input class="btn btn-primary" type="submit" name="op" value="Buscar">
                 </div>
             </div>
@@ -79,10 +116,11 @@ if ($op != null) {
     </form>
     <!-- Barra de pesquisa de jogador End -->
 
+
     <!-- TODO Botão de adicionar moderador Start -->
     <?php if ($isDono) { ?>
         <h2>Moderadores</h2>
-        <a href="../moderador/moderador.php?idRankings=<?= $idRankings ?>">
+        <a href="../moderador/moderador.php?idCampeonato=<?= $idCampeonato ?>">
             <button type="button" class="btn btn-primary" data-toggle="modal">Moderadores</button>
         </a>
     <?php } ?>
@@ -91,7 +129,7 @@ if ($op != null) {
 
     <!-- Botão para mostar todos os jogadores (vai aparecer apenas quando tiver uma pesquisa feita) Start -->
     <?php if ($op == "Buscar") { ?>
-        <a href="Ranking.php?idRankings=<?= $idRankings ?>&nmRankings=<?= $nmRankings ?>"><button class="btn btn-primary">Mostrar todos os jogadores</button></a>
+        <a href="Campeonato.php?idCampeonato=<?= $idCampeonato ?>&nmCampeonato=<?= $nmCampeonato ?>"><button class="btn btn-primary">Mostrar todos os jogadores</button></a>
         <p>Resultados de: <?= $_POST['nmJogador'] ?></p>
     <?php } ?>
     <!-- Botão para mostar todos os jogadores (vai aparecer apenas quando tiver uma pesquisa feita) End -->
@@ -131,16 +169,16 @@ if ($op != null) {
                                 <div class="row" mx-auto>
                                     <!--Adiciona um gol-->
                                     <form method="POST">
-                                        <input type="hidden" name="nmRankings" value="<?= $nmRankings ?>">
-                                        <input type="hidden" name="idRankings" value="<?= $idRankings ?>">
+                                        <input type="hidden" name="nmCampeonato" value="<?= $nmCampeonato ?>">
+                                        <input type="hidden" name="idCampeonato" value="<?= $idCampeonato ?>">
                                         <input type="hidden" name="qtGolAtual" value="<?= $jogador['qt_ponto'] ?>">
                                         <input type="hidden" name="idJogador" value="<?= $jogador['id_jogador'] ?>">
                                         <input type="submit" name="op" value="+" class="btn btn-primary" />
                                     </form>
                                     <!--Remove um gol-->
                                     <form method="POST">
-                                        <input type="hidden" name="nmRankings" value="<?= $nmRankings ?>">
-                                        <input type="hidden" name="idRankings" value="<?= $idRankings ?>">
+                                        <input type="hidden" name="nmCampeonato" value="<?= $nmCampeonato ?>">
+                                        <input type="hidden" name="idCampeonato" value="<?= $idCampeonato ?>">
                                         <input type="hidden" name="qtGolAtual" value="<?= $jogador['qt_ponto'] ?>">
                                         <input type="hidden" name="idJogador" value="<?= $jogador['id_jogador'] ?>">
                                         <input type="submit" name="op" value="-" class="btn btn-danger" <?php if ($jogador['qt_ponto'] == 0) { ?>disabled<?php } ?> />
@@ -176,8 +214,8 @@ if ($op != null) {
                             </div>
                             <div class="modal-footer">
                                 <input type="submit" class="btn btn-primary" name="op" value="Alterar">
-                                <input type="hidden" name="nmRankings" value="<?= $nmRankings ?>">
-                                <input type="hidden" name="idRankings" value="<?= $idRankings ?>">
+                                <input type="hidden" name="nmCampeonato" value="<?= $nmCampeonato ?>">
+                                <input type="hidden" name="idCampeonato" value="<?= $idCampeonato ?>">
                                 <input type="hidden" name="qtGolAtual" value="<?= $jogador['qt_ponto'] ?>">
                                 <?php if ($isDono) { ?>
                                     <input type="submit" class="btn btn-danger" name="op" value="Excluir">
@@ -192,7 +230,7 @@ if ($op != null) {
 
         <?php }
     } else { ?>
-        <p>Nenhum jogador neste Ranking</p>
+        <p>Nenhum jogador neste Campeonato</p>
     <?php } ?>
     <!-- Populando ranking End -->
 
@@ -206,14 +244,14 @@ if ($op != null) {
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="POST" action="Ranking.php?idRankings=<?= $idRankings ?>">
+                <form method="POST" action="Campeonato.php?idCampeonato=<?= $idCampeonato ?>">
                     <div class="modal-body">
                         <p><input type="text" class="form-control  " name="nmJogador" id="Nome" placeholder="Nome do Jogador"></p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                        <input type="hidden" name="nmRankings" value="<?= $nmRankings ?>">
-                        <input type="hidden" name="idRankings" value="<?= $idRankings ?>">
+                        <input type="hidden" name="nmCampeonato" value="<?= $nmCampeonato ?>">
+                        <input type="hidden" name="idCampeonato" value="<?= $idCampeonato ?>">
                         <input type="submit" class="btn btn-primary" name="op" value="Criar">
                     </div>
                 </form>
