@@ -56,10 +56,174 @@ if ($op != null) {
 <head>
     <!-- Referência da folha de estilo do cabeçalho -->
     <link rel="stylesheet" href="../_header/header.css">
+    <link rel="stylesheet" href="ranking.css">
     <title>Index</title>
 </head>
 
 <body>
+    <!-- TODO test tabs Start -->
+    <nav class="nav_tabs">
+        <ul>
+            <li>
+                <input type="radio" id="tab1" class="rd_tab" name="tabs" checked>
+                <label for="tab1" class="tab_label">Ranking</label>
+                <div class="tab-content">
+                    <article>
+
+                        <h2><?= $nmRankings ?></h2>
+                        <hr class="star-dark mb-5">
+                        <hr />
+                        <!-- Barra de pesquisa de jogador Start -->
+                        <form method="post">
+                            <div class="col-6">
+                                <div class="input-group border rounded">
+                                    <input type="text" class="form-control border-0" placeholder="Buscar Jogador" aria-label="Buscar Jogador" aria-describedby="basic-addon2" name="nmJogador">
+                                    <div class="input-group-append">
+                                        <input type="hidden" name="nmRankings" value="<?= $nmRankings ?>">
+                                        <input type="hidden" name="idRankings" value="<?= $idRankings ?>">
+                                        <input class="btn btn-primary" type="submit" name="op" value="Buscar">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <!-- Barra de pesquisa de jogador End -->
+                        <!-- Botão para mostar todos os jogadores (vai aparecer apenas quando tiver uma pesquisa feita) Start -->
+                        <?php if ($op == "Buscar") { ?>
+                            <a href="Ranking.php?idRankings=<?= $idRankings ?>&nmRankings=<?= $nmRankings ?>"><button class="btn btn-primary">Mostrar todos os jogadores</button></a>
+                            <p>Resultados de: <?= $_POST['nmJogador'] ?></p>
+                        <?php } ?>
+                        <!-- Botão para mostar todos os jogadores (vai aparecer apenas quando tiver uma pesquisa feita) End -->
+                        <!-- Habilitando botão de adicionar jogador para o dono do ranking Start -->
+                        <?php if ($isDono) { ?>
+                            <button class="btn btn-primary" id='addJogador' data-toggle="modal" data-target="#CriarJogador">Adicionar Jogador</button>
+                        <?php } ?>
+                        <!-- Habilitando botão de adicionar jogador para o dono do ranking End -->
+                        <!-- Populando ranking Start -->
+                        <?php
+                        if ($registros != null) {
+                            foreach ($registros as $jogador) {
+                                $contador++;
+                        ?>
+                                <!-- Atribuindo cor para os primeiros colocados do ranking Start -->
+                                <div class="card" <?php if ($contador == 1) { ?> style="background-color: #FFD700" <?php } elseif ($contador == 2) { ?> style="background-color: #C0C0C0" <?php } elseif ($contador == 3) { ?> style="background-color: #D2691E" <?php } ?>>
+                                    <!-- Atribuindo cor para os primeiros colocados do ranking End -->
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <!-- Colocação do jogador -->
+                                                <h3 class="colocacao mx-auto"><?= $jogador['colocacao'] ?>°</h3>
+                                            </div>
+                                            <div class="col-md-4 mx-auto">
+                                                <!--Nome do Jogador-->
+                                                <h5 class="nome mt-4 mx-auto" style="font-size: 30px;"><?= $jogador['nm_jogador'] ?></h5>
+                                            </div class="col-auto mx-auto">
+                                            <!--Numero de gols do jogador-->
+                                            <h5 class="gols"><?= $jogador['qt_ponto'] ?> </h5>
+                                            <?php
+                                            if ($isDono || $isAdm) { ?>
+                                                <div class="col-md-2">
+                                                    <div class="row" mx-auto>
+                                                        <!--Adiciona um gol-->
+                                                        <form method="POST">
+                                                            <input type="hidden" name="nmRankings" value="<?= $nmRankings ?>">
+                                                            <input type="hidden" name="idRankings" value="<?= $idRankings ?>">
+                                                            <input type="hidden" name="qtGolAtual" value="<?= $jogador['qt_ponto'] ?>">
+                                                            <input type="hidden" name="idJogador" value="<?= $jogador['id_jogador'] ?>">
+                                                            <input type="submit" name="op" value="+" class="btn btn-primary" />
+                                                        </form>
+                                                        <!--Remove um gol-->
+                                                        <form method="POST">
+                                                            <input type="hidden" name="nmRankings" value="<?= $nmRankings ?>">
+                                                            <input type="hidden" name="idRankings" value="<?= $idRankings ?>">
+                                                            <input type="hidden" name="qtGolAtual" value="<?= $jogador['qt_ponto'] ?>">
+                                                            <input type="hidden" name="idJogador" value="<?= $jogador['id_jogador'] ?>">
+                                                            <input type="submit" name="op" value="-" class="btn btn-danger" <?php if ($jogador['qt_ponto'] == 0) { ?>disabled<?php } ?> />
+                                                        </form>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-1">
+                                                    <button class="btn btn-secondary mx-autos" id='alteraJogador' data-toggle="modal" data-target="#AlterarJogador-<?= $jogador["id_jogador"]; ?>">...</button>
+                                                <?php } ?>
+
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                </div>
+
+                <!-- Modal Para Alteração de Jogador Start (Tem que ficar dentro do foreach para pegar a referência do ID do jogador) -->
+                <div class="modal fade" id="AlterarJogador-<?= $jogador["id_jogador"]; ?>" tabindex="-1" role="dialog" aria-labelledby="TituloModalLongoExemplo" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="TituloModalLongoExemplo"><?= $jogador['nm_jogador'] ?></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <form method="POST">
+                                <div class="modal-body">
+                                    <p><input type="text" class="form-control" name="nmNomeUpdate" id="Nome" value="<?= $jogador['nm_jogador'] ?>"></p>
+                                    <p><input type="number" class="form-control" name="qtGolUpdate" id="Gol" value="<?= $jogador['qt_ponto'] ?>"></p>
+                                    <input type="hidden" name="idJogadorUpdate" value="<?= $jogador['id_jogador'] ?>">
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="submit" class="btn btn-primary" name="op" value="Alterar">
+                                    <input type="hidden" name="nmRankings" value="<?= $nmRankings ?>">
+                                    <input type="hidden" name="idRankings" value="<?= $idRankings ?>">
+                                    <input type="hidden" name="qtGolAtual" value="<?= $jogador['qt_ponto'] ?>">
+                                    <?php if ($isDono) { ?>
+                                        <input type="submit" class="btn btn-danger" name="op" value="Excluir">
+                                    <?php } ?>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal Para Alteração de Jogador End (Tem que ficar dentro do foreach para pegar a referência do ID do jogador) -->
+
+            <?php }
+                        } else { ?>
+            <p>Nenhum jogador neste Ranking</p>
+        <?php } ?>
+        <!-- Populando ranking End -->
+
+
+        </article>
+        <!-- TODO Botão de adicionar moderador Start -->
+        <?php if ($isDono) { ?>
+            <h2>Moderadores</h2>
+            <a href="../moderador/moderador.php?idRankings=<?= $idRankings ?>">
+                <button type="button" class="btn btn-primary" data-toggle="modal">Moderadores</button>
+            </a>
+        <?php } ?>
+        <!-- <button class="btn btn-primary" data-toggle="modal" data-target="#Moderadores">Moderadores</button> -->
+        <!-- Botão de adicionar moderador End -->
+        </div>
+            </li>
+            <li>
+                <input type="radio" name="tabs" class="rd_tab" id="tab2">
+                <label for="tab2" class="tab_label">Equipes</label>
+                <div class="tab-content">
+                    <article>
+                    </article>
+                </div>
+            </li>
+            <li>
+                <input type="radio" name="tabs" class="rd_tab" id="tab3">
+                <label for="tab3" class="tab_label">Configurações</label>
+                <div class="tab-content">
+                    <article>
+                        Integer at ligula eget turpis elementum ultrices eget quis tortor. Duis posuere lorem justo, ut malesuada tortor tempus a. Curabitur pellentesque ultricies consectetur. Maecenas diam lorem, hendrerit eget sem ut, tincidunt vulputate ipsum. In vel enim et erat sagittis eleifend vel eu nunc. In hac habitasse platea dictumst. Integer tincidunt, augue at posuere eleifend, lacus quam hendrerit risus, aliquam sollicitudin ligula tellus quis elit. Proin varius fringilla vehicula. Phasellus mollis sollicitudin orci, id fringilla magna volutpat non. Nullam sed luctus nisl.
+                    </article>
+                </div>
+            </li>
+        </ul>
+    </nav>
+    <!-- TODO test tabs End -->
+
     <h2><?= $nmRankings ?></h2>
     <hr class="star-dark mb-5">
 
